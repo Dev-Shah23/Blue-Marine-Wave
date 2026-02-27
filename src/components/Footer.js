@@ -1,104 +1,144 @@
-import { Anchor, Mail, Phone, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Anchor, Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from "lucide-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 export default function Footer() {
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <footer data-testid="footer" className="bg-[#004E64]/95 backdrop-blur-sm text-white py-16 relative z-10">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <Anchor className="w-8 h-8" />
-              <span className="text-2xl font-bold tracking-widest" style={{ fontFamily: 'Manrope, sans-serif' }}>
+    <footer className="relative bg-[var(--footer-bg)] text-white pt-32 pb-12 overflow-hidden transition-colors duration-500">
+      {/* Triple Layered Waves */}
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
+        {/* Deep Wave */}
+        <svg
+          className="relative block w-[200%] h-[120px] animate-wave-slow opacity-30"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5,73.84-4.36,147.54,16.88,218.2,35.26,69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113,2,1200,34.19V0Z"
+            fill="var(--wave-1)"
+          ></path>
+        </svg>
+        {/* Mid Wave */}
+        <svg
+          className="absolute top-0 left-0 block w-[200%] h-[100px] animate-wave-medium opacity-50"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
+            fill="var(--wave-2)"
+          ></path>
+        </svg>
+        {/* Top Wave (Solid) */}
+        <svg
+          className="absolute top-0 left-0 block w-[200%] h-[80px] animate-wave-fast"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
+            fill="var(--wave-3)"
+          ></path>
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          {/* Brand */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <Anchor className="w-8 h-8 text-[var(--accent-gold)]" />
+              <span className="text-xl font-bold tracking-widest font-serif">
                 BLUE WAVE MARINE
               </span>
             </div>
-            <p className="text-slate-300 leading-relaxed mb-6">
-              Premium seafood export solutions connecting Asian markets with the world's finest seafood.
+            <p className="text-slate-400 text-sm leading-relaxed italic">
+              Asia's premier gateway to the world's finest seafood harvest. Connecting international fisheries with the region's top importers since 2020.
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 text-slate-300">
-                <Mail className="w-5 h-5" />
-                <span>info@bluewavemarine.com</span>
-              </div>
-              <div className="flex items-center gap-3 text-slate-300">
-                <Phone className="w-5 h-5" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-3 text-slate-300">
-                <MapPin className="w-5 h-5" />
-                <span>Seattle, Washington, USA</span>
-              </div>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
+                <Facebook className="w-5 h-5" />
+              </a>
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>
-              Quick Links
-            </h4>
-            <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => scrollToSection('products')}
-                  className="text-slate-300 hover:text-white"
-                  style={{ transition: 'color 0.3s' }}
-                >
-                  Products
-                </button>
+            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Partnership</h4>
+            <ul className="space-y-4 text-sm text-slate-400">
+              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Global Inventory</Link></li>
+              <li><Link to="/catalog" className="hover:text-[var(--accent-gold)] transition-colors">Catalog Specifications</Link></li>
+              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Export Process</Link></li>
+              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Quality Control</Link></li>
+              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Logistics Support</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Details */}
+          <div>
+            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Connect With Us</h4>
+            <ul className="space-y-4 text-sm text-slate-400">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-[var(--accent-gold)] flex-shrink-0" />
+                <span>Trade Center Plaza, HK</span>
               </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('quality')}
-                  className="text-slate-300 hover:text-white"
-                  style={{ transition: 'color 0.3s' }}
-                >
-                  Quality
-                </button>
+              <li className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-[var(--accent-gold)] flex-shrink-0" />
+                <span>+852 9XXX XXXX</span>
               </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('about')}
-                  className="text-slate-300 hover:text-white"
-                  style={{ transition: 'color 0.3s' }}
-                >
-                  About
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('contact')}
-                  className="text-slate-300 hover:text-white"
-                  style={{ transition: 'color 0.3s' }}
-                >
-                  Contact
-                </button>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-[var(--accent-gold)] flex-shrink-0" />
+                <span>export@bluewavemarine.com</span>
               </li>
             </ul>
           </div>
 
+          {/* Business Hours */}
           <div>
-            <h4 className="text-lg font-semibold mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>
-              Certifications
-            </h4>
-            <ul className="space-y-2 text-slate-300">
-              <li>ISO 22000</li>
-              <li>HACCP Certified</li>
-              <li>BAP Certified</li>
-              <li>MSC Chain of Custody</li>
-              <li>ASC Certified</li>
-            </ul>
+            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Trading Hours</h4>
+            <div className="space-y-4 text-sm text-slate-400 bg-white/5 p-4 rounded-xl border border-white/5">
+              <div className="flex justify-between">
+                <span>Mon - Fri</span>
+                <span className="text-white">09:00 - 18:00</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Saturday</span>
+                <span className="text-white">10:00 - 14:00</span>
+              </div>
+              <div className="flex justify-between text-[var(--accent-gold)] font-bold">
+                <span>Sunday</span>
+                <span>Market Closed</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-600 pt-8 text-center text-slate-400">
-          <p>&copy; 2026 Blue Wave Marine. All rights reserved.</p>
+        {/* Bottom */}
+        <div className="pt-8 border-t border-white/10 text-center space-y-4">
+          <p className="text-xs text-slate-500 uppercase tracking-widest">
+            © 2026 Blue Wave Marine. All rights reserved. Industrial Grade Seafood Excellence.
+          </p>
+          <p className="text-xs text-slate-600">
+            Crafted with precision by{" "}
+            <a 
+              href="https://github.com/Dev-Shah23" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[var(--accent-gold)] hover:underline decoration-wavy underline-offset-4 transition-all"
+            >
+              Dev Shah
+            </a>
+          </p>
         </div>
       </div>
     </footer>
