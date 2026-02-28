@@ -108,13 +108,16 @@ export default function FeaturedHero() {
     return () => clearInterval(intervalRef.current);
   }, [isPaused, startInterval]);
 
-  // Reset config on product change
+  // Reset config on product change — all setState calls here are intentional resets
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setSelectedCut(0);
     setSelectedPackaging(0);
     setQuantity(1);
     setImageLoaded(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // ──────────────────────
   // Price counter animation

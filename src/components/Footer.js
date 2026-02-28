@@ -2,13 +2,50 @@ import { Anchor, Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from "luci
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 export default function Footer() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [bubbles, setBubbles] = useState([]);
+
+  useEffect(() => {
+    // Generate 25 stable random bubbles for the footer on mount
+    const newBubbles = Array.from({ length: 25 }).map((_, i) => ({
+      id: i,
+      size: Math.random() * 10 + 4, // 4px to 14px
+      left: `${Math.random() * 100}%`,
+      duration: Math.random() * 10 + 8, // 8s to 18s rise time
+      delay: Math.random() * 10, // 0s to 10s start delay
+      opacity: Math.random() * 0.08 + 0.04, // 0.04 to 0.12 opacity
+      drift: `${(Math.random() - 0.5) * 80}px`, // gentle horizontal drift
+    }));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setBubbles(newBubbles);
+  }, []);
 
   return (
     <footer className="relative bg-[var(--footer-bg)] text-white pt-32 pb-12 overflow-hidden transition-colors duration-500">
+      {/* Animated Bubbles Background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {bubbles.map((b) => (
+          <div
+            key={b.id}
+            className="absolute rounded-full"
+            style={{
+              width: `${b.size}px`,
+              height: `${b.size}px`,
+              left: b.left,
+              bottom: "-20px",
+              background: "var(--bubble-bg)",
+              animation: `floatBubble ${b.duration}s ease-in ${b.delay}s infinite`,
+              "--drift": b.drift,
+              "--start-opacity": b.opacity,
+              opacity: 0, // start invisible until animation begins
+            }}
+          />
+        ))}
+      </div>
       {/* Triple Layered Waves */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
         {/* Deep Wave */}
@@ -47,8 +84,8 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          {/* Brand */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+          {/* Column 1: Brand & Contact */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <Anchor className="w-8 h-8 text-[var(--accent-gold)]" />
@@ -61,80 +98,68 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
-                <Instagram className="w-5 h-5" />
+                <Linkedin className="w-5 h-5" />
               </a>
               <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
-                <Linkedin className="w-5 h-5" />
+                <Instagram className="w-5 h-5" />
               </a>
               <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
                 <Facebook className="w-5 h-5" />
               </a>
             </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Partnership</h4>
-            <ul className="space-y-4 text-sm text-slate-400">
-              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Global Inventory</Link></li>
-              <li><Link to="/catalog" className="hover:text-[var(--accent-gold)] transition-colors">Catalog Specifications</Link></li>
-              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Export Process</Link></li>
-              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Quality Control</Link></li>
-              <li><Link to="/" className="hover:text-[var(--accent-gold)] transition-colors">Logistics Support</Link></li>
-            </ul>
-          </div>
-
-          {/* Contact Details */}
-          <div>
-            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Connect With Us</h4>
-            <ul className="space-y-4 text-sm text-slate-400">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-[var(--accent-gold)] flex-shrink-0" />
-                <span>Trade Center Plaza, HK</span>
-              </li>
+            <ul className="space-y-2 text-sm text-slate-400 mt-6">
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-[var(--accent-gold)] flex-shrink-0" />
-                <span>+852 9XXX XXXX</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-[var(--accent-gold)] flex-shrink-0" />
+                <Mail className="w-4 h-4 text-[var(--accent-gold)]" />
                 <span>export@bluewavemarine.com</span>
               </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-[var(--accent-gold)]" />
+                <span>+852 9XXX XXXX</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5" />
+                <span>Trade Center Plaza, HK</span>
+              </li>
             </ul>
           </div>
 
-          {/* Business Hours */}
+          {/* Column 2: Quick Links */}
           <div>
-            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Trading Hours</h4>
-            <div className="space-y-4 text-sm text-slate-400 bg-white/5 p-4 rounded-xl border border-white/5">
-              <div className="flex justify-between">
-                <span>Mon - Fri</span>
-                <span className="text-white">09:00 - 18:00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Saturday</span>
-                <span className="text-white">10:00 - 14:00</span>
-              </div>
-              <div className="flex justify-between text-[var(--accent-gold)] font-bold">
-                <span>Sunday</span>
-                <span>Market Closed</span>
-              </div>
-            </div>
+            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Quick Links</h4>
+            <ul className="space-y-4 text-sm text-slate-400">
+              <li><a href="/#products" className="hover:text-[var(--accent-gold)] transition-colors">Products</a></li>
+              <li><a href="/#quality" className="hover:text-[var(--accent-gold)] transition-colors">Quality</a></li>
+              <li><a href="/#about" className="hover:text-[var(--accent-gold)] transition-colors">About</a></li>
+              <li><a href="/catalog" className="hover:text-[var(--accent-gold)] transition-colors">Catalog</a></li>
+              <li><a href="/#contact" className="hover:text-[var(--accent-gold)] transition-colors">Contact</a></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Certifications */}
+          <div>
+            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Certifications</h4>
+            <ul className="space-y-4 text-sm text-slate-400">
+              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> ISO 22000</li>
+              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> HACCP Certified</li>
+              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> BAP Certified</li>
+              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> MSC Chain of Custody</li>
+              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> ASC Certified</li>
+            </ul>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 border-t border-white/10 text-center space-y-4">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
           <p className="text-xs text-slate-500 uppercase tracking-widest">
             © 2026 Blue Wave Marine. All rights reserved. Industrial Grade Seafood Excellence.
           </p>
           <p className="text-xs text-slate-600">
-            Crafted with precision by{" "}
+            Designed & Developed by{" "}
             <a 
               href="https://github.com/Dev-Shah23" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-[var(--accent-gold)] hover:underline decoration-wavy underline-offset-4 transition-all"
+              className="text-[var(--accent-gold)] hover:underline decoration-wavy underline-offset-4 transition-all font-bold"
             >
               Dev Shah
             </a>

@@ -1,9 +1,10 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
 
 export default function Hero() {
   const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { scrollY } = useScroll();
 
   // Smooth parallax
@@ -16,7 +17,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center overflow-hidden text-white"
+      className={`relative min-h-screen flex items-center overflow-hidden text-white gold-bottom-border ${isInView ? "in-view" : ""}`}
     >
       {/* Background with Parallax */}
       <motion.div style={{ y }} className="absolute inset-0">

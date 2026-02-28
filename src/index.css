@@ -20,38 +20,68 @@ code {
 
 @layer base {
     :root {
+        /* Base Defaults */
         --background: 0 0% 100%;
         --foreground: 0 0% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
+
+        /* Light Mode — Cool Blue-White Progression */
+        --base-bg: #EEF5FC;
+        --products-bg: #EEF5FC;
+        --importers-bg: #DAEAF6;
+        --about-bg: #C2D9EE;
+        --contact-bg: #AAC8E4;
+        --footer-bg: #0D2B4A;
+
+        --text-primary: #0A1628;
+        --text-secondary: #1E3A5C;
+
+        --card-bg: #FFFFFF;
+        --card-border: rgba(44, 74, 110, 0.15);
+        --glass-bg: rgba(255, 255, 255, 0.7);
+
+        --accent-gold: #C9A84C;
+
+        --wave-1: #1A3A5C;
+        --wave-2: #7BAFD4;
+        --wave-3: #0D2B4A;
+
+        --bubble-bg: radial-gradient(circle at 30% 30%, rgba(10,40,80,0.15), rgba(10,40,80,0.02));
+
         --radius: 0.5rem;
+    }
+
+    .dark {
+        /* Dark Mode — Precise Midnight Blue Steps */
+        --base-bg: #010810;
+        --products-bg: #010D1F;
+        --importers-bg: #051828;
+        --about-bg: #082233;
+        --contact-bg: #0D2E4A;
+        --footer-bg: #010810;
+
+        --text-primary: #F0F5FF;
+        --text-secondary: #8BACC8;
+
+        --card-bg: #0A1F35;
+        --card-border: #1A3A5C;
+        --glass-bg: rgba(10, 31, 53, 0.6);
+
+        --wave-1: #0A2040;
+        --wave-2: #062030;
+        --wave-3: #010810;
+
+        --bubble-bg: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
     }
 }
 
 @layer base {
     * {
         @apply border-border;
+        transition-property: background-color, background, color;
+        transition-duration: 0.4s;
+        transition-timing-function: ease;
     }
+
     body {
         @apply bg-background text-foreground;
     }
@@ -62,7 +92,7 @@ code {
         display: contents !important;
     }
 
-    [data-debug-wrapper="true"] > * {
+    [data-debug-wrapper="true"]>* {
         margin-left: inherit;
         margin-right: inherit;
         margin-top: inherit;
@@ -89,6 +119,191 @@ code {
     }
 }
 
+@layer utilities {
+    .animate-bubble-up-slow {
+        animation: bubble-up-slow 8s linear infinite;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse-slow 3s ease-in-out infinite;
+    }
+
+    .animate-wave-slow {
+        animation: wave-horizontal 20s linear infinite;
+    }
+
+    .animate-wave-medium {
+        animation: wave-horizontal-reverse 15s linear infinite;
+    }
+
+    .animate-wave-fast {
+        animation: wave-horizontal 10s linear infinite;
+    }
+
+    .animate-shimmer-text {
+        animation: shimmer-text 3s linear infinite;
+    }
+
+    .animate-ken-burns {
+        animation: ken-burns 8s ease-in-out infinite alternate;
+    }
+
+    .animate-typewriter {
+        overflow: hidden;
+        border-right: 2px solid var(--accent-gold);
+        white-space: nowrap;
+        animation:
+            typing 2s steps(40, end),
+            blink-caret .75s step-end infinite;
+    }
+}
+
+@keyframes bubble-up-slow {
+    0% {
+        transform: translateY(100%) scale(0.5);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.3;
+    }
+
+    80% {
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translateY(-200px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+@keyframes wave-horizontal {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes wave-horizontal-reverse {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-slow {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.4;
+    }
+}
+
+@keyframes shimmer-text {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes ken-burns {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: var(--accent-gold)
+    }
+}
+
+@keyframes ripple-out {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
 html {
     scroll-behavior: smooth;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+@keyframes floatBubble {
+    0% { 
+        transform: translateY(100%) translateX(0); 
+        opacity: var(--start-opacity); 
+    }
+    50% { 
+        transform: translateY(-50vh) translateX(var(--drift)); 
+    }
+    100% { 
+        transform: translateY(-100vh) translateX(calc(var(--drift) * -1)); 
+        opacity: 0; 
+    }
+}
+
+.gold-bottom-border {
+    position: relative;
+}
+
+.gold-bottom-border::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60%;
+    height: 1.5px;
+    background: linear-gradient(to right, transparent, #E8B84B 40%, #E8B84B 60%, transparent);
+    box-shadow: 0 0 8px rgba(232, 184, 75, 0.4);
+    transform-origin: center;
+    transition: transform 600ms ease-out;
+}
+
+.gold-bottom-border.in-view::after {
+    transform: translateX(-50%) scaleX(1);
 }

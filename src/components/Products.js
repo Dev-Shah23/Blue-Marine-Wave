@@ -20,7 +20,7 @@ export default function Products({ onProductClick }) {
   return (
     <section
       id="products"
-      className="py-24 px-4 md:px-8 lg:px-16 w-full bg-gradient-to-b from-[#050D1A] to-[#0A2240] relative overflow-hidden"
+      className="py-24 px-4 md:px-8 lg:px-16 w-full bg-[#050D1A] relative overflow-hidden"
     >
       {/* Subtle grid background */}
       <div

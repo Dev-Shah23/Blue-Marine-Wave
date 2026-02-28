@@ -1,35 +1,13 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Package, MapPin } from 'lucide-react';
-import { useEffect } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
+import { X, CheckCircle, Info, ChevronRight } from "lucide-react";
 
 export default function ProductModal({ product, isOpen, onClose }) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    if (isOpen) {
-      window.addEventListener('keydown', handleEscape);
-      return () => window.removeEventListener('keydown', handleEscape);
-    }
-  }, [isOpen, onClose]);
-
   if (!product) return null;
 
   const scrollToContact = () => {
     onClose();
     setTimeout(() => {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
     }, 300);
   };
 
@@ -37,127 +15,122 @@ export default function ProductModal({ product, isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
             onClick={onClose}
-            data-testid="modal-backdrop"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] cursor-pointer"
           />
-          
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.3, type: 'spring' }}
-              className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto"
-              data-testid="product-modal"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between z-10">
-                <h2 
-                  className="text-2xl font-bold text-[#0F172A]"
-                  style={{ fontFamily: 'Manrope, sans-serif' }}
-                  data-testid="modal-product-name"
-                >
-                  {product.name}
-                </h2>
-                <button
-                  onClick={onClose}
-                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-                  aria-label="Close modal"
-                  data-testid="modal-close-btn"
-                >
-                  <X className="w-6 h-6 text-slate-600" />
-                </button>
-              </div>
 
-              <div className="p-6">
-                <div className="aspect-video rounded-xl overflow-hidden mb-6">
+          {/* Modal Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none"
+          >
+            <div className="bg-[var(--card-bg)] w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl border border-[var(--card-border)]/30 flex flex-col pointer-events-auto relative">
+              
+              {/* Close Button */}
+              <button 
+                onClick={onClose}
+                className="absolute top-6 right-6 p-2 rounded-full bg-black/10 hover:bg-black/20 text-[var(--text-primary)] transition-colors z-10"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="flex flex-col lg:flex-row h-full overflow-y-auto lg:overflow-hidden">
+                {/* Image Section */}
+                <div className="lg:w-1/2 relative h-[300px] lg:h-full bg-slate-900">
                   <img 
-                    src={product.image}
+                    src={product.image} 
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover opacity-90"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:bg-gradient-to-r" />
+                  
+                  <div className="absolute bottom-8 left-8 right-8 text-white">
+                    <p className="text-[var(--accent-gold)] text-xs font-bold uppercase tracking-[0.2em] mb-2">Detailed Specifications</p>
+                    <h2 className="text-3xl md:text-5xl font-bold font-serif leading-tight">{product.name}</h2>
+                    {product.scientificName && (
+                      <p className="text-slate-300 italic text-sm mt-2">{product.scientificName}</p>
+                    )}
+                  </div>
                 </div>
 
-                {product.scientificName && (
-                  <p className="text-base italic text-slate-500 mb-4">
-                    {product.scientificName}
-                  </p>
-                )}
-
-                <p className="text-base leading-relaxed text-slate-700 mb-6">
-                  {product.fullDescription || product.shortDescription}
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div className="bg-slate-50 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Package className="w-5 h-5 text-[#C9A84C]" />
-                      <h3 
-                        className="text-lg font-semibold text-[#0F172A]"
-                        style={{ fontFamily: 'Manrope, sans-serif' }}
-                      >
-                        Available Forms
-                      </h3>
+                {/* Content Section */}
+                <div className="lg:w-1/2 p-8 md:p-12 overflow-y-auto bg-[var(--card-bg)] custom-scrollbar transition-colors duration-500">
+                  <div className="space-y-10">
+                    {/* Brief */}
+                    <div className="flex gap-4 items-start bg-[var(--accent-gold)]/5 p-6 rounded-2xl border border-[var(--accent-gold)]/10">
+                      <Info className="w-6 h-6 text-[var(--accent-gold)] flex-shrink-0 mt-1" />
+                      <p className="text-[var(--text-secondary)] text-sm leading-relaxed italic">
+                        {product.shortDescription}
+                      </p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {product.forms.map(form => (
-                        <span 
-                          key={form}
-                          className="bg-white text-slate-700 px-3 py-1.5 rounded-full text-sm font-medium border border-slate-200"
-                        >
-                          {form}
-                        </span>
-                      ))}
+
+                    {/* Forms & Specs */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        <h4 className="text-[var(--accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Processing Forms</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {product.forms.map(form => (
+                            <span 
+                              key={form} 
+                              className="px-3 py-1.5 bg-[var(--text-primary)]/5 rounded-lg text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] border border-[var(--card-border)]/20"
+                            >
+                              {form}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-[var(--accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Core Attributes</h4>
+                        <div className="space-y-2">
+                          {['HACCP Certified', 'Sustainably Sourced', 'Export Grade'].map(cert => (
+                            <div key={cert} className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
+                              <CheckCircle className="w-4 h-4 text-green-500" />
+                              <span>{cert}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Full Specs List */}
+                    {product.specifications && (
+                      <div className="border-t border-[var(--card-border)]/20 pt-8">
+                        <h4 className="text-[var(--text-primary)] text-sm font-bold uppercase tracking-widest mb-6 font-serif">Inventory Parameters</h4>
+                        <div className="space-y-3">
+                          {Object.entries(product.specifications).map(([key, val]) => (
+                            <div key={key} className="flex justify-between items-center py-3 border-b border-[var(--card-border)]/10 text-sm">
+                              <span className="text-[var(--text-secondary)] font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                              <span className="text-[var(--text-primary)] font-bold">{val}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action Button */}
+                    <div className="pt-8">
+                      <button
+                        onClick={scrollToContact}
+                        className="w-full bg-[var(--accent-gold)] text-white py-5 rounded-xl font-bold tracking-[0.15em] uppercase text-sm shadow-xl shadow-[var(--accent-gold)]/20 hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-3 group"
+                        data-testid="modal-request-quote-btn"
+                      >
+                        Request Quote for {product.name}
+                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </button>
                     </div>
                   </div>
-
-                  {product.specifications && (
-                    <div className="bg-slate-50 rounded-xl p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <MapPin className="w-5 h-5 text-[#C9A84C]" />
-                        <h3 
-                          className="text-lg font-semibold text-[#0F172A]"
-                          style={{ fontFamily: 'Manrope, sans-serif' }}
-                        >
-                          Origin
-                        </h3>
-                      </div>
-                      <p className="text-slate-700">{product.specifications.origin}</p>
-                      {product.specifications.certifications && (
-                        <div className="mt-3">
-                          <p className="text-sm font-medium text-slate-600 mb-2">Certifications:</p>
-                          <div className="flex flex-wrap gap-1">
-                            {product.specifications.certifications.map(cert => (
-                              <span 
-                                key={cert}
-                                className="text-xs bg-[#C9A84C] text-[#050D1A] font-bold px-2 py-1 rounded"
-                              >
-                                {cert}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </div>
-
-                <button
-                  onClick={scrollToContact}
-                  className="w-full bg-[#C9A84C] hover:bg-[#b08d2f] text-[#050D1A] rounded-lg px-8 py-4 font-bold shadow-[0_0_15px_rgba(201,168,76,0.2)] hover:shadow-[0_0_20px_rgba(201,168,76,0.4)] hover:-translate-y-0.5 active:scale-95 transition-all"
-                  data-testid="modal-request-quote-btn"
-                >
-                  Request Quote for {product.name}
-                </button>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </>
       )}
     </AnimatePresence>

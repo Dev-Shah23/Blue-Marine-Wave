@@ -41,20 +41,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative">
-      <div 
-        className="fixed top-0 left-0 w-full h-full -z-10"
-        style={{
-          background: 'linear-gradient(180deg, #001F3F 0%, #003B5C 40%, #004E64 70%, #00566D 100%)',
-          animation: 'oceanGradient 15s ease infinite'
-        }}
-      />
-      <style>{`
-        @keyframes oceanGradient {
-          0%, 100% { filter: hue-rotate(0deg) brightness(1); }
-          50% { filter: hue-rotate(10deg) brightness(1.1); }
-        }
-      `}</style>
+    <div className="min-h-screen relative bg-[var(--base-bg)] transition-colors duration-500">
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Navbar />
         <Hero />

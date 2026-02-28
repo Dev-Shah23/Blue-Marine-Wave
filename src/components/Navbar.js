@@ -1,14 +1,31 @@
-import { useEffect, useState } from "react";
-import { Anchor } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Anchor, Sun, Moon } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [ripple, setRipple] = useState(null);
+  const toggleRef = useRef(null);
+  const [prevPath, setPrevPath] = useState(location.pathname);
+
+  // Sync state with path during render (compliant with React lifecycle)
+  if (location.pathname !== prevPath) {
+    setPrevPath(location.pathname);
+    if (location.pathname !== "/") {
+      if (activeSection !== "") setActiveSection("");
+    }
+  }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
@@ -18,7 +35,9 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (location.pathname !== "/") return;
+    if (location.pathname !== "/") {
+      return;
+    }
 
     const sections = ["products", "quality", "about", "contact"];
     const observer = new IntersectionObserver(
@@ -51,80 +70,136 @@ export default function Navbar() {
     }
   };
 
-  const getLinkClass = (id) => {
-    const isActive = activeSection === id && location.pathname === "/";
-    return `relative transition-colors group ${
-      isActive ? "text-[#C9A84C]" : "hover:text-[#C9A84C] text-white"
-    }`;
+  const handleThemeToggle = (e) => {
+    const rect = toggleRef.current.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    
+    setRipple({ x, y });
+    
+    // Switch theme halfway through animation
+    setTimeout(() => {
+      setTheme(theme === "dark" ? "light" : "dark");
+    }, 400);
+
+    setTimeout(() => setRipple(null), 1000);
   };
 
-  const currentPath = location.pathname;
+  const navLinks = [
+    { id: "products", label: "Products" },
+    { id: "quality", label: "Quality" },
+    { id: "about", label: "About" },
+  ];
+
+  const isDark = theme === "dark";
+  const navBg = scrolled 
+    ? (isDark ? "bg-[#010810]/80" : "bg-[#FAF7F2]/90 shadow-sm")
+    : "bg-transparent";
+  
+  const textColor = scrolled
+    ? (isDark ? "text-[#F0F5FF]" : "text-[#0D1F35]")
+    : "text-white";
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-[#050D1A]/80 backdrop-blur-lg shadow-lg border-b border-white/10"
-          : "bg-transparent backdrop-blur-md"
-      }`}
-    >
-      <div className="w-full px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center gap-3 text-white hover:text-[#C9A84C] transition-colors"
-        >
-          <Anchor className="w-7 h-7" />
-          <span className="text-lg font-bold tracking-widest">
-            BLUE WAVE MARINE
-          </span>
-        </Link>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8 font-medium">
-          <button
-            onClick={() => scrollToSection("products")}
-            className={getLinkClass("products")}
-          >
-            Products
-            <div className={`absolute bottom-0 left-0 h-[2px] bg-[#C9A84C] transition-all duration-300 ${activeSection === 'products' && currentPath === '/' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
-          </button>
-
-          <button
-            onClick={() => scrollToSection("quality")}
-            className={getLinkClass("quality")}
-          >
-            Quality
-            <div className={`absolute bottom-0 left-0 h-[2px] bg-[#C9A84C] transition-all duration-300 ${activeSection === 'quality' && currentPath === '/' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
-          </button>
-
-          <button
-            onClick={() => scrollToSection("about")}
-            className={getLinkClass("about")}
-          >
-            About
-            <div className={`absolute bottom-0 left-0 h-[2px] bg-[#C9A84C] transition-all duration-300 ${activeSection === 'about' && currentPath === '/' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
-          </button>
-
+    <>
+      <nav
+        className={`fixed top-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${navBg}`}
+      >
+        <div className="w-full px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
+          {/* Logo */}
           <Link
-            to="/catalog"
-            className={`relative transition-colors group ${
-              currentPath === "/catalog" ? "text-[#C9A84C]" : "hover:text-[#C9A84C] text-white"
-            }`}
+            to="/"
+            className={`flex items-center gap-3 hover:text-[#C9A84C] transition-colors ${textColor}`}
           >
-            Catalog
-            <div className={`absolute bottom-0 left-0 h-[2px] bg-[#C9A84C] transition-all duration-300 ${currentPath === '/catalog' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+            <Anchor className="w-7 h-7" />
+            <span className="text-lg font-bold tracking-widest font-serif">
+              BLUE WAVE MARINE
+            </span>
           </Link>
 
-          <button
-            onClick={() => scrollToSection("contact")}
-            className="relative overflow-hidden bg-[#C9A84C] hover:bg-[#b08d2f] text-[#050D1A] px-5 py-2 rounded-md font-semibold transition-all shadow-md hover:shadow-[0_0_15px_rgba(201,168,76,0.4)] group/btn animate-pulse-click"
-          >
-            <span className="relative z-10">Contact</span>
-            <div className="absolute inset-0 animate-shimmer opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-          </button>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-8 font-medium">
+            {navLinks.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => scrollToSection(id)}
+                className={`relative py-1 text-sm tracking-wide transition-colors ${
+                  activeSection === id ? "text-[#C9A84C]" : `hover:text-[#C9A84C] ${textColor}`
+                }`}
+              >
+                {label}
+                {activeSection === id && (
+                  <motion.div
+                    layoutId="activeIndicator"
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#C9A84C]"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </button>
+            ))}
+
+            <Link
+              to="/catalog"
+              className={`relative py-1 text-sm tracking-wide transition-colors ${
+                location.pathname === "/catalog" ? "text-[#C9A84C]" : `hover:text-[#C9A84C] ${textColor}`
+              }`}
+            >
+              Catalog
+              {location.pathname === "/catalog" && (
+                <motion.div
+                  layoutId="activeIndicator"
+                  className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#C9A84C]"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </Link>
+
+            {/* Dark / Light Toggle */}
+            {mounted && (
+              <button
+                ref={toggleRef}
+                onClick={handleThemeToggle}
+                className="text-[#C9A84C] hover:text-[#b08d2f] transition-colors flex items-center justify-center p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5"
+                aria-label="Toggle Dark Mode"
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+            )}
+
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="relative overflow-hidden bg-[#C9A84C] hover:bg-[#b08d2f] text-white px-6 py-2 rounded-md font-bold tracking-wide transition-all shadow-md active:scale-95 group/btn"
+              style={{ background: '#C9A84C' }}
+            >
+              <span className="relative z-10">Contact</span>
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Ripple Transition Overlay */}
+      <AnimatePresence>
+        {ripple && (
+          <motion.div
+            initial={{ scale: 0, opacity: 1 }}
+            animate={{ scale: 4, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "circOut" }}
+            style={{
+              position: "fixed",
+              top: ripple.y - 100,
+              left: ripple.x - 100,
+              width: 200,
+              height: 200,
+              borderRadius: "50%",
+              backgroundColor: isDark ? "#FAF7F2" : "#010810",
+              zIndex: 9999,
+              pointerEvents: "none",
+            }}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 }

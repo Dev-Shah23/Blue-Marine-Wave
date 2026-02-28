@@ -1,207 +1,168 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Package, Truck, FileCheck } from 'lucide-react';
-import { products } from '../data/products';
-import { motion } from 'framer-motion';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { 
+  ArrowLeft, 
+  ChevronRight, 
+  ShieldCheck, 
+  MapPin, 
+  Package, 
+  Box,
+  Truck,
+  CheckCircle2
+} from "lucide-react";
+import { products } from "../data/products";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = products.find(p => p.id === id);
+  const product = products.find((item) => item.id === id);
 
-  if (!product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">Product Not Found</h2>
-          <button
-            onClick={() => navigate('/')}
-            className="text-[#C9A84C] hover:underline"
-          >
-            Return to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (!product) {
+      navigate("/catalog");
+    }
+  }, [product, navigate]);
+
+  if (!product) return null;
 
   const scrollToContact = () => {
-    navigate('/');
-    setTimeout(() => {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--base-bg)] text-[var(--text-primary)] transition-colors duration-500">
       <Navbar />
       
-      <div className="pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <button
-            data-testid="back-to-products-btn"
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-[#0A2540] hover:text-[#C9A84C] font-semibold mb-8 group"
+      {/* Header / Hero */}
+      <div className="relative pt-32 pb-16 px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
+        <button 
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--accent-gold)] transition-colors mb-12 group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm font-bold uppercase tracking-widest">Back to Inventory</span>
+        </button>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Image */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-[var(--card-border)]/30 group"
           >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1" style={{ transition: 'transform 0.3s' }} />
-            Back to Products
-          </button>
+            <img 
+              src={product.image} 
+              alt={product.name} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+            />
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
-            >
-              <img 
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="mb-6">
-                <h1 
-                  data-testid="product-detail-name"
-                  className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-3"
-                  style={{ fontFamily: 'Manrope, sans-serif' }}
-                >
-                  {product.name}
-                </h1>
-                {product.scientificName && (
-                  <p className="text-lg italic text-slate-500 mb-4">
-                    {product.scientificName}
-                  </p>
-                )}
+          {/* Info */}
+          <div className="space-y-10">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="px-4 py-1.5 bg-[var(--accent-gold)] text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-lg">
+                  {product.category}
+                </span>
+                <span className="flex items-center gap-1.5 text-[var(--accent-gold)] text-[10px] font-bold uppercase tracking-widest">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  Verified Grade
+                </span>
               </div>
-
-              <p className="text-lg leading-relaxed text-slate-600 mb-8">
-                {product.fullDescription}
+              <h1 className="text-5xl md:text-7xl font-bold font-serif mb-4 leading-tight">
+                {product.name}
+              </h1>
+              <p className="text-[var(--text-secondary)] text-xl italic font-medium">
+                {product.scientificName}
               </p>
+            </div>
 
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold text-[#0F172A] mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>
-                  Available Forms
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {product.forms.map(form => (
-                    <span 
-                      key={form}
-                      className="bg-slate-100 text-slate-700 px-4 py-2 rounded-full font-medium"
-                    >
-                      {form}
-                    </span>
+            <p className="text-lg text-[var(--text-secondary)] leading-relaxed max-w-xl border-l-4 border-[var(--accent-gold)] pl-6 italic bg-[var(--accent-gold)]/5 py-4 rounded-r-xl">
+              {product.shortDescription}
+            </p>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div className="p-6 bg-[var(--card-bg)] rounded-2xl border border-[var(--card-border)]/20 shadow-sm">
+                <Box className="w-6 h-6 text-[var(--accent-gold)] mb-4" />
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-2">Cuts & Forms</h4>
+                <div className="flex flex-wrap gap-2">
+                  {product.forms?.map(form => (
+                    <span key={form} className="text-xs font-bold text-[var(--text-primary)] uppercase">{form}</span>
                   ))}
                 </div>
               </div>
-
-              <button
-                data-testid="product-detail-quote-btn"
-                onClick={scrollToContact}
-                className="bg-[#C9A84C] hover:bg-[#b08d2f] text-[#050D1A] rounded-full px-8 py-4 font-bold shadow-[0_0_15px_rgba(201,168,76,0.3)] hover:shadow-[0_0_25px_rgba(201,168,76,0.5)] hover:-translate-y-0.5 active:scale-95"
-                style={{ transition: 'all 0.3s' }}
-              >
-                Request Quote for {product.name}
-              </button>
-            </motion.div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-[#F5F7FA] rounded-2xl p-8"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <Package className="w-8 h-8 text-[#C9A84C]" />
-                <h3 className="text-2xl font-semibold text-[#0F172A]" style={{ fontFamily: 'Manrope, sans-serif' }}>
-                  Specifications
-                </h3>
+              <div className="p-6 bg-[var(--card-bg)] rounded-2xl border border-[var(--card-border)]/20 shadow-sm">
+                <Package className="w-6 h-6 text-[var(--accent-gold)] mb-4" />
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-2">Supply Capacity</h4>
+                <p className="text-xs font-bold text-[var(--text-primary)] uppercase">Container Loads / Bulk</p>
               </div>
-              <dl className="space-y-4">
-                <div>
-                  <dt className="text-sm font-medium text-slate-500 mb-1">Origin</dt>
-                  <dd className="text-base text-slate-900">{product.specifications.origin}</dd>
-                </div>
-                {product.specifications.season && (
-                  <div>
-                    <dt className="text-sm font-medium text-slate-500 mb-1">Season / Availability</dt>
-                    <dd className="text-base text-slate-900">{product.specifications.season}</dd>
-                  </div>
-                )}
-                {product.specifications.sizes && (
-                  <div>
-                    <dt className="text-sm font-medium text-slate-500 mb-1">Sizes Available</dt>
-                    <dd className="text-base text-slate-900">{product.specifications.sizes}</dd>
-                  </div>
-                )}
-                {product.specifications.grade && (
-                  <div>
-                    <dt className="text-sm font-medium text-slate-500 mb-1">Grade</dt>
-                    <dd className="text-base text-slate-900">{product.specifications.grade}</dd>
-                  </div>
-                )}
-                <div>
-                  <dt className="text-sm font-medium text-slate-500 mb-1">Packaging Options</dt>
-                  <dd className="text-base text-slate-900">{product.specifications.packaging}</dd>
-                </div>
-              </dl>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-[#F5F7FA] rounded-2xl p-8"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <FileCheck className="w-8 h-8 text-[#C9A84C]" />
-                <h3 className="text-2xl font-semibold text-[#0F172A]" style={{ fontFamily: 'Manrope, sans-serif' }}>
-                  Certifications
-                </h3>
-              </div>
-              <ul className="space-y-3">
-                {product.specifications.certifications.map(cert => (
-                  <li key={cert} className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-[#C9A84C] flex-shrink-0" />
-                    <span className="text-base text-slate-900">{cert}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-[#0A2540] text-white rounded-2xl p-8 md:p-12 text-center shadow-xl border border-white/5"
-          >
-            <Truck className="w-16 h-16 mx-auto mb-6" />
-            <h3 className="text-3xl font-semibold mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>
-              Ready to Order?
-            </h3>
-            <p className="text-lg text-slate-200 mb-6 max-w-2xl mx-auto">
-              Contact us for detailed pricing, minimum order quantities, and delivery schedules. 
-              Our team will work with you to customize the perfect solution for your market.
-            </p>
-            <button
+            <button 
               onClick={scrollToContact}
-              className="mt-4 bg-[#C9A84C] hover:bg-[#b08d2f] text-[#050D1A] rounded-full px-8 py-4 font-bold shadow-[0_0_15px_rgba(201,168,76,0.3)] hover:shadow-[0_0_25px_rgba(201,168,76,0.5)] hover:-translate-y-0.5 active:scale-95"
-              style={{ transition: 'all 0.3s' }}
+              className="relative overflow-hidden w-full lg:w-auto px-12 py-5 bg-[var(--accent-gold)] text-white font-bold uppercase tracking-[0.2em] rounded-xl shadow-xl shadow-[var(--accent-gold)]/30 hover:-translate-y-1 transition-all group active:scale-95"
             >
-              Get a Custom Quote
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                Request Custom Quote
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-          </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Specifications Section */}
+      <div className="bg-[var(--importers-bg)] py-24 transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+            {/* Tech Specs */}
+            <div>
+              <h3 className="text-3xl font-bold font-serif mb-10 border-b border-[var(--accent-gold)]/30 pb-4 inline-block">Industrial Specifications</h3>
+              <div className="space-y-4">
+                {product.specifications && Object.entries(product.specifications).map(([key, value]) => (
+                  <div key={key} className="flex justify-between items-center py-4 border-b border-[var(--card-border)]/10">
+                    <span className="text-[var(--text-secondary)] font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                    <span className="text-[var(--text-primary)] font-bold">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quality & Logistics */}
+            <div className="space-y-12">
+              <div className="bg-[var(--card-bg)] p-10 rounded-3xl border border-[var(--card-border)]/30 shadow-xl">
+                <Truck className="w-10 h-10 text-[var(--accent-gold)] mb-6" />
+                <h4 className="text-2xl font-bold font-serif mb-4">Export Logistics</h4>
+                <p className="text-[var(--text-secondary)] mb-8 text-sm leading-relaxed">
+                  We manage the entire cold chain from harvest to your port. Global tracking and temperature logging included.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  {['Custom Invoicing', 'Cert. of Origin', 'HACCP Logs', 'Vessel Tracking'].map(item => (
+                    <div key={item} className="flex items-center gap-2 text-xs font-bold text-[var(--text-primary)] uppercase">
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="contact" className="py-12 bg-[var(--contact-bg)]">
+        {/* Contact component is already on the Home page, 
+            but for the detail page we can either import it or just link back.
+            Better to have a simple CTA here since Contact is heavy. */}
+        <div className="max-w-3xl mx-auto text-center px-6">
+           <h4 className="text-2xl font-serif font-bold mb-6">Ready to Order?</h4>
+           <p className="text-[var(--text-secondary)] mb-8">Our team will work with you to customize the perfect export plan.</p>
+           <button onClick={() => navigate("/#contact")} className="bg-[var(--text-primary)] text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--accent-gold)] transition-colors">Go to Contact Form</button>
         </div>
       </div>
 
