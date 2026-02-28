@@ -94,7 +94,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed italic">
-              Asia's premier gateway to the world's finest seafood harvest. Connecting international fisheries with the region's top importers since 2020.
+              Asia's and Europe's premier gateway to the world's finest seafood harvest. Connecting international fisheries with the region's top importers since 2020.
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
@@ -110,15 +110,15 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-slate-400 mt-6">
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[var(--accent-gold)]" />
-                <span>export@bluewavemarine.com</span>
+                <span>export@bluewavemarine.in</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[var(--accent-gold)]" />
-                <span>+852 9XXX XXXX</span>
+                <span>+91 8891704553</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5" />
-                <span>Trade Center Plaza, HK</span>
+                <span> GIDC Estate,Veraval,Gujurat (362269) </span>
               </li>
             </ul>
           </div>
