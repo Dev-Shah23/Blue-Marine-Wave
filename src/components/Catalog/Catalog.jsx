@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import ProductModal from "../ProductModal";
 
 const products = [
   { id: 0, name: "Wild Alaskan Salmon",   region: "North Atlantic",  certified: true,  image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=600&auto=format&fit=crop" },
@@ -17,6 +18,7 @@ export default function CatalogGrid() {
   const [loadedImages, setLoadedImages] = useState({});
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [mscOnly, setMscOnly] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleImageLoad = (id) => {
     setLoadedImages((prev) => ({ ...prev, [id]: true }));
@@ -138,9 +140,12 @@ export default function CatalogGrid() {
                       <p className="text-gray-400 text-sm mt-2 flex-grow">
                         Region: {product.region}
                       </p>
-                      <button className="relative overflow-hidden w-full mt-6 border border-gray-600 text-white py-3 px-4 uppercase text-xs font-bold tracking-[0.2em] flex items-center justify-between transition-all duration-300 hover:bg-[#C9A84C] hover:text-[#050d1a] hover:border-[#C9A84C] group/btn">
+                      <button 
+                        onClick={() => setSelectedProduct(product)}
+                        className="relative overflow-hidden w-full mt-6 border border-[var(--product-border)] text-[var(--text-primary)] py-3 px-4 uppercase text-xs font-bold tracking-[0.2em] flex items-center justify-between transition-all duration-300 hover:bg-[var(--accent-gold)] hover:text-[var(--btn-text)] hover:border-[var(--accent-gold)] group/btn"
+                      >
                         <span className="relative z-10 flex items-center justify-between w-full">
-                          View Details
+                          View Specs
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                         </span>
                         <div className="absolute inset-0 animate-shimmer opacity-0 group-hover/btn:opacity-100 transition-opacity" />
@@ -154,6 +159,13 @@ export default function CatalogGrid() {
         </div>
 
       </section>
+      
+      {/* Product Modal */}
+      <ProductModal 
+        product={selectedProduct} 
+        isOpen={selectedProduct !== null}
+        onClose={() => setSelectedProduct(null)} 
+      />
     </div>
   );
 }

@@ -26,6 +26,11 @@ code {
 
         /* Light Mode — Cool Blue-White Progression */
         --base-bg: #EEF5FC;
+        --nav-bg: #FFFFFF;
+        --nav-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        --nav-links: #0A1628;
+        --nav-links-hover: #C9A84C;
+
         --products-bg: #EEF5FC;
         --importers-bg: #DAEAF6;
         --about-bg: #C2D9EE;
@@ -34,10 +39,26 @@ code {
 
         --text-primary: #0A1628;
         --text-secondary: #1E3A5C;
+        --text-tertiary: #2C4A6E;
 
         --card-bg: #FFFFFF;
         --card-border: rgba(44, 74, 110, 0.15);
         --glass-bg: rgba(255, 255, 255, 0.7);
+
+        --product-bg: #FFFFFF;
+        --product-border: rgba(44, 74, 110, 0.2);
+        --product-hover-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+
+        --trust-bg: #FFFFFF;
+        --trust-border: rgba(44, 74, 110, 0.1);
+
+        --input-bg: #FFFFFF;
+        --input-border: rgba(44, 74, 110, 0.3);
+        --input-text: #0A1628;
+        --input-placeholder: #6B8FAD;
+
+        --btn-bg: #C9A84C;
+        --btn-text: #0A1628;
 
         --accent-gold: #C9A84C;
 
@@ -45,7 +66,7 @@ code {
         --wave-2: #7BAFD4;
         --wave-3: #0D2B4A;
 
-        --bubble-bg: radial-gradient(circle at 30% 30%, rgba(10,40,80,0.15), rgba(10,40,80,0.02));
+        --bubble-bg: radial-gradient(circle at 30% 30%, rgba(10, 40, 80, 0.15), rgba(10, 40, 80, 0.02));
 
         --radius: 0.5rem;
     }
@@ -53,6 +74,11 @@ code {
     .dark {
         /* Dark Mode — Precise Midnight Blue Steps */
         --base-bg: #010810;
+        --nav-bg: rgba(1, 8, 16, 0.8);
+        --nav-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --nav-links: #F0F5FF;
+        --nav-links-hover: #C9A84C;
+
         --products-bg: #010D1F;
         --importers-bg: #051828;
         --about-bg: #082233;
@@ -61,16 +87,34 @@ code {
 
         --text-primary: #F0F5FF;
         --text-secondary: #8BACC8;
+        --text-tertiary: #64748B;
 
         --card-bg: #0A1F35;
         --card-border: #1A3A5C;
         --glass-bg: rgba(10, 31, 53, 0.6);
 
+        --product-bg: #0b1421;
+        --product-border: #1e2a3b;
+        --product-hover-shadow: 0 20px 40px -15px rgba(201,168,76,0.15);
+
+        --trust-bg: rgba(5, 13, 26, 0.4);
+        --trust-border: rgba(255, 255, 255, 0.05);
+
+        --input-bg: rgba(255, 255, 255, 0.05);
+        --input-border: rgba(255, 255, 255, 0.1);
+        --input-text: #FFFFFF;
+        --input-placeholder: #64748b;
+
+        --btn-bg: #C9A84C;
+        --btn-text: #050D1A;
+
+        --accent-gold: #C9A84C;
+
         --wave-1: #0A2040;
         --wave-2: #062030;
         --wave-3: #010810;
 
-        --bubble-bg: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
+        --bubble-bg: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.05));
     }
 }
 
@@ -272,16 +316,18 @@ html {
 }
 
 @keyframes floatBubble {
-    0% { 
-        transform: translateY(100%) translateX(0); 
-        opacity: var(--start-opacity); 
+    0% {
+        transform: translateY(100%) translateX(0);
+        opacity: var(--start-opacity);
     }
-    50% { 
-        transform: translateY(-50vh) translateX(var(--drift)); 
+
+    50% {
+        transform: translateY(-50vh) translateX(var(--drift));
     }
-    100% { 
-        transform: translateY(-100vh) translateX(calc(var(--drift) * -1)); 
-        opacity: 0; 
+
+    100% {
+        transform: translateY(-100vh) translateX(calc(var(--drift) * -1));
+        opacity: 0;
     }
 }
 

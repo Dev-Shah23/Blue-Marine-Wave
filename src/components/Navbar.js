@@ -92,24 +92,22 @@ export default function Navbar() {
   ];
 
   const isDark = theme === "dark";
-  const navBg = scrolled 
-    ? (isDark ? "bg-[#010810]/80" : "bg-[#FAF7F2]/90 shadow-sm")
-    : "bg-transparent";
   
-  const textColor = scrolled
-    ? (isDark ? "text-[#F0F5FF]" : "text-[#0D1F35]")
-    : "text-white";
+  // Use CSS variables for the background and text color when scrolled.
+  // When not scrolled, we keep it transparent and white (assuming it sits over the Hero).
+  const navBgClass = scrolled ? "bg-[var(--nav-bg)] shadow-[var(--nav-shadow)]" : "bg-transparent";
+  const textColorClass = scrolled ? "text-[var(--nav-links)]" : "text-white";
 
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${navBg}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${navBgClass}`}
       >
         <div className="w-full px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
           {/* Logo */}
           <Link
             to="/"
-            className={`flex items-center gap-3 hover:text-[#C9A84C] transition-colors ${textColor}`}
+            className={`flex items-center gap-3 hover:text-[#C9A84C] transition-colors ${textColorClass}`}
           >
             <Anchor className="w-7 h-7" />
             <span className="text-lg font-bold tracking-widest font-serif">
@@ -124,7 +122,7 @@ export default function Navbar() {
                 key={id}
                 onClick={() => scrollToSection(id)}
                 className={`relative py-1 text-sm tracking-wide transition-colors ${
-                  activeSection === id ? "text-[#C9A84C]" : `hover:text-[#C9A84C] ${textColor}`
+                  activeSection === id ? "text-[#C9A84C]" : `hover:text-[#C9A84C] ${textColorClass}`
                 }`}
               >
                 {label}
@@ -141,7 +139,7 @@ export default function Navbar() {
             <Link
               to="/catalog"
               className={`relative py-1 text-sm tracking-wide transition-colors ${
-                location.pathname === "/catalog" ? "text-[#C9A84C]" : `hover:text-[#C9A84C] ${textColor}`
+                location.pathname === "/catalog" ? "text-[#C9A84C]" : `hover:text-[#C9A84C] ${textColorClass}`
               }`}
             >
               Catalog

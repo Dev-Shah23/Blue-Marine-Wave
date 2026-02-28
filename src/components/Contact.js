@@ -63,7 +63,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" data-testid="contact-section" className="py-20 md:py-32 bg-gradient-to-b from-[#1A4A7A] to-[#1E5C8A] text-white">
+    <section id="contact" data-testid="contact-section" className="py-20 md:py-32 bg-[var(--contact-bg)] text-[var(--text-primary)] transition-colors duration-500">
       <div className="max-w-4xl mx-auto px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -72,16 +72,16 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-sm font-medium tracking-wide uppercase text-[#C9A84C] mb-4">
+          <p className="text-sm font-medium tracking-wide uppercase text-[var(--accent-gold)] mb-4">
             Get In Touch
           </p>
           <h2 
-            className="text-3xl md:text-5xl font-semibold tracking-tight text-white mb-4"
+            className="text-3xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)] mb-4"
             style={{ fontFamily: 'Manrope, sans-serif' }}
           >
             Request a Quote
           </h2>
-          <p className="text-lg md:text-xl leading-relaxed text-slate-300">
+          <p className="text-lg md:text-xl leading-relaxed text-[var(--text-secondary)]">
             Share your requirements and we'll provide a detailed proposal
           </p>
         </motion.div>
@@ -91,7 +91,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-[#050D1A]/50 rounded-2xl p-8 md:p-12 shadow-sm border border-white/10 backdrop-blur-md"
+          className="bg-[var(--card-bg)] rounded-2xl p-8 md:p-12 shadow-sm border border-[var(--card-border)] backdrop-blur-md"
         >
           {status.message && (
             <div 
@@ -114,7 +114,7 @@ export default function Contact() {
           <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Full Name *
                 </label>
                 <input
@@ -125,14 +125,14 @@ export default function Contact() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="John Doe"
                 />
               </div>
 
               <div>
-                <label htmlFor="company" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="company" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Company Name *
                 </label>
                 <input
@@ -143,14 +143,14 @@ export default function Contact() {
                   required
                   value={formData.company}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="ABC Trading Co."
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Email Address *
                 </label>
                 <input
@@ -161,14 +161,14 @@ export default function Contact() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="john@example.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="phone" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Phone Number *
                 </label>
                 <input
@@ -179,14 +179,14 @@ export default function Contact() {
                   required
                   value={formData.phone}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="+65 1234 5678"
                 />
               </div>
 
               <div>
-                <label htmlFor="destination_country" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="destination_country" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Destination Country *
                 </label>
                 <input
@@ -197,14 +197,14 @@ export default function Contact() {
                   required
                   value={formData.destination_country}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="Singapore"
                 />
               </div>
 
               <div>
-                <label htmlFor="destination_port" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="destination_port" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Destination Port
                 </label>
                 <input
@@ -214,14 +214,14 @@ export default function Contact() {
                   data-testid="contact-port-input"
                   value={formData.destination_port}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="Port of Singapore"
                 />
               </div>
 
               <div>
-                <label htmlFor="product_interest" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="product_interest" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Product of Interest *
                 </label>
                 <input
@@ -232,14 +232,14 @@ export default function Contact() {
                   required
                   value={formData.product_interest}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="Black Tiger Shrimp"
                 />
               </div>
 
               <div>
-                <label htmlFor="quantity" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="quantity" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                   Estimated Quantity *
                 </label>
                 <input
@@ -250,7 +250,7 @@ export default function Contact() {
                   required
                   value={formData.quantity}
                   onChange={handleChange}
-                  className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500"
+                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
                   style={{ transition: 'all 0.3s' }}
                   placeholder="1000 kg/month"
                 />
@@ -258,7 +258,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
+              <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                 Additional Requirements
               </label>
               <textarea
@@ -268,7 +268,7 @@ export default function Contact() {
                 value={formData.message}
                 onChange={handleChange}
                 rows={5}
-                className="bg-white/5 border border-white/10 focus:ring-2 focus:ring-[#C9A84C] focus:border-[#C9A84C] focus:outline-none rounded-lg px-4 py-3 w-full text-white placeholder:text-slate-500 resize-none"
+                className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] resize-none"
                 style={{ transition: 'all 0.3s' }}
                 placeholder="Please share any specific requirements, certifications needed, or questions..."
               />
@@ -278,7 +278,7 @@ export default function Contact() {
               type="submit"
               data-testid="contact-submit-btn"
               disabled={loading}
-              className="relative overflow-hidden w-full bg-[#C9A84C] hover:bg-[#b08d2f] disabled:bg-slate-600 text-[#050D1A] rounded-lg px-8 py-4 font-bold shadow-lg hover:shadow-[0_0_20px_rgba(201,168,76,0.3)] hover:-translate-y-0.5 active:scale-95 disabled:hover:translate-y-0 disabled:active:scale-100 group/btn animate-pulse-click"
+              className="relative overflow-hidden w-full bg-[var(--btn-bg)] hover:brightness-110 disabled:bg-slate-600 text-[var(--btn-text)] rounded-lg px-8 py-4 font-bold shadow-lg hover:shadow-[0_0_20px_rgba(201,168,76,0.3)] hover:-translate-y-0.5 active:scale-95 disabled:hover:translate-y-0 disabled:active:scale-100 group/btn animate-pulse-click"
               style={{ transition: 'all 0.3s' }}
             >
               <span className="relative z-10">{loading ? 'Submitting...' : 'Submit Quote Request'}</span>
