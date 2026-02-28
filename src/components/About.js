@@ -66,10 +66,10 @@ export default function About() {
             
             <div className="space-y-6 text-base leading-relaxed text-[var(--text-secondary)] mb-8 transition-colors duration-500">
               <p>
-                Blue Wave Marine was founded with a clear mission: to bridge the gap between 
-                world-class seafood sources and Asia's growing demand for premium imported products. 
-                With over two decades of combined experience, we understand the dynamic 
-                challenges importers face—from complex documentation to intricate cold-chain logistics.
+                Blue Wave Marine Company is built on a proud 60-year legacy in the seafood industry. Our journey began with our grandfather,
+                Mr. Antony, who owned and operated three fishing boats, laying the foundation of trust, quality, and honest trade.
+                The next generation expanded the business by establishing a seafood processing unit and growing into supply operations. 
+                With hands-on industry experience and exposure to export-oriented factories, we developed strong expertise in quality standards and global market requirements.
               </p>
               
               <p>
@@ -90,7 +90,7 @@ export default function About() {
                 'Custom processing & sorting options',
                 'Comprehensive cold-chain tracking',
                 'Multi-national compliance expertise',
-                'Asian market distribution support'
+                'European and Asian market distribution support'
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -130,7 +130,7 @@ export default function About() {
               <p className="text-4xl font-bold mb-2 flex items-center font-serif">
                 <motion.span>{displayCount}</motion.span>+
               </p>
-              <p className="text-lg text-[var(--text-secondary)] transition-colors duration-500">Years serving Asian importers</p>
+              <p className="text-lg text-[var(--text-secondary)] transition-colors duration-500">Years serving Asian and European importers</p>
             </div>
           </motion.div>
         </div>
