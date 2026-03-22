@@ -1,4 +1,5 @@
-import { Anchor, Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from "lucide-react";
+import logo from "../fwdphotos/logo.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -84,11 +85,11 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16 items-start">
           {/* Column 1: Brand & Contact */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <Anchor className="w-8 h-8 text-[var(--accent-gold)]" />
+              <img src={logo} alt="Blue Wave Marine Logo" className="w-16 h-16 object-contain" />
               <span className="text-xl font-bold tracking-widest font-serif">
                 BLUE WAVE MARINE
               </span>
@@ -124,7 +125,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Quick Links */}
-          <div>
+          <div className="pt-4">
             <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Quick Links</h4>
             <ul className="space-y-4 text-sm text-slate-400">
               <li><a href="/#products" className="hover:text-[var(--accent-gold)] transition-colors">Products</a></li>
@@ -136,7 +137,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Certifications */}
-          <div>
+          <div className="pt-4">
             <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Certifications</h4>
             <ul className="space-y-4 text-sm text-slate-400">
               <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> ISO 22000</li>
