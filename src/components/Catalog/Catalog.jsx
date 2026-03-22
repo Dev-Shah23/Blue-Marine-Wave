@@ -2,15 +2,33 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import ProductModal from "../ProductModal";
+import { products as allProducts } from "../../data/products";
 
-const products = [
-  { id: 0, name: "Wild Alaskan Salmon",   region: "North Atlantic",  certified: true,  image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=600&auto=format&fit=crop" },
-  { id: 1, name: "Black Tiger Shrimp",    region: "Pacific Coast",   certified: true,  image: "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?q=80&w=600&auto=format&fit=crop" },
-  { id: 2, name: "Yellowfin Tuna",        region: "Mediterranean",   certified: false, image: "https://images.unsplash.com/photo-1598514982777-1e9a1e3f0ad4?q=80&w=600&auto=format&fit=crop" },
-  { id: 3, name: "Atlantic Cod",          region: "North Atlantic",  certified: true,  image: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?q=80&w=600&auto=format&fit=crop" },
-  { id: 4, name: "King Crab",             region: "Arctic Circle",   certified: true,  image: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?q=80&w=600&auto=format&fit=crop" },
-  { id: 5, name: "Sea Scallops",          region: "Pacific Coast",   certified: false, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=600&auto=format&fit=crop" },
-];
+const catalogRegionMapping = {
+  "Atlantic Salmon": "North Atlantic",
+  "King Crab": "Arctic Circle",
+  "Pacific Mackerel": "Pacific Coast",
+  "Tiger Prawns": "Pacific Coast",
+  "Premium Squid": "Mediterranean",
+  "Black Tiger Shrimp": "Pacific Coast"
+};
+
+const catalogCertifiedMapping = {
+  "Atlantic Salmon": true,
+  "King Crab": true,
+  "Pacific Mackerel": false,
+  "Tiger Prawns": true,
+  "Premium Squid": false,
+  "Black Tiger Shrimp": true
+};
+
+const products = allProducts.map((p, index) => ({
+  ...p,
+  id: index,
+  region: catalogRegionMapping[p.name] || "Pacific Coast",
+  certified: catalogCertifiedMapping[p.name] || false,
+  image: p.image
+}));
 
 const ALL_REGIONS = ["North Atlantic", "Pacific Coast", "Mediterranean", "Arctic Circle"];
 

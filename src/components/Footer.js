@@ -118,7 +118,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5" />
-                <span> GIDC Estate,Veraval,Gujurat (362269) </span>
+                <a href="https://maps.app.goo.gl/uYc3789abJ5titzA8" className="hover:text-[var(--accent-gold)] transition-colors">GIDC Estate,Veraval,Gujurat (362269)</a>
               </li>
             </ul>
           </div>
@@ -162,6 +162,15 @@ export default function Footer() {
               className="text-[var(--accent-gold)] hover:underline decoration-wavy underline-offset-4 transition-all font-bold"
             >
               Dev Shah
+            </a>
+            {" "}&{" "}
+            <a 
+              href="https://github.com/KennethMartin06" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[var(--accent-gold)] hover:underline decoration-wavy underline-offset-4 transition-all font-bold"
+            >
+              Kenneth Martin
             </a>
           </p>
         </div>

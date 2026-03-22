@@ -1,6 +1,7 @@
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { CheckCircle } from 'lucide-react';
+import fishermen from "../fwdphotos/Fisherman image.jpg"
 
 export default function About() {
   const countRef = useRef(null);
@@ -117,7 +118,7 @@ export default function About() {
             {/* Image with Ken Burns Effect */}
             <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[var(--card-border)]/20">
               <img 
-                src="https://images.pexels.com/photos/35481804/pexels-photo-35481804.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                src={fishermen}
                 alt="Blue Wave Marine operations"
                 className="w-full h-full object-cover animate-ken-burns"
               />

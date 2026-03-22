@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useParallax from "@/hooks/useParallax";
+import crab from "../../fwdphotos/WhatsApp Image 2026-03-22 at 19.08.13.jpeg"
+import mackeral from "../../fwdphotos/Mackeral.jpeg"
+import shrimp from "../../fwdphotos/Shrimp.jpeg"
 
 // ──────────────────────────────────────────────
 // Product Data (priceNum added for counter anim)
@@ -10,46 +13,43 @@ const products = [
     name: "ATLANTIC SALMON",
     subtitle: "Grade A Premium Cut",
     tag: "Elite Selection",
-    price: "$14.50",
+    price: "₹14.50",
     priceNum: 14.5,
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAryqBRAPySh9hB229d31zc9R3TFFNX4WmNuEz_N47mw6fkS96cJHL4wDAOWLpvMUfW9lUCpqC-g_k14AmvXHPWkUegkgw-MKbB2y_t8q5eaYML5NVyzyhXybneQcG7YuZQ1FQaHv2ztHvFSd7HkGjcZFDzWEhawAZzSTkNgrXeUCoCiVVljShES3xfVNwRus-dvWiDl9sksUEynSZVtVg8b8-RmOoasgJTeZoR9IxCK4o1lR4h9wjerCf-g-v79ivZCdc3AB3rieY",
   },
   {
-    name: "YELLOWFIN TUNA",
+    name: "PACIFIC MACKEREL",
     subtitle: "Sashimi Grade",
     tag: "Premium Export",
-    price: "$18.20",
+    price: "₹18.20",
     priceNum: 18.2,
-    image:
-      "https://images.unsplash.com/photo-1598514982777-1e9a1e3f0ad4?q=80&w=2070",
+    image:mackeral,
   },
   {
     name: "BLACK TIGER SHRIMP",
     subtitle: "Export Quality",
     tag: "Wild Harvest",
-    price: "$11.75",
+    price: "₹11.75",
     priceNum: 11.75,
-    image:
-      "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?q=80&w=2070",
+    image:shrimp,
   },
   {
     name: "KING CRAB",
     subtitle: "Arctic Selection",
     tag: "Luxury Catch",
-    price: "$32.00",
+    price: "₹32.00",
     priceNum: 32.0,
-    image:
-      "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?q=80&w=2070",
+    image:crab,
   },
   {
-    name: "SEA SCALLOPS",
+    name: "TIGER PRAWN",
     subtitle: "Dry Pack Premium",
     tag: "Chef Grade",
-    price: "$21.40",
+    price: "₹21.40",
     priceNum: 21.4,
     image:
-      "https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=2070",
+      "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?q=80&w=2070",
   },
 ];
 
@@ -280,35 +280,41 @@ export default function FeaturedHero() {
               <h1 className="font-bold text-6xl leading-[0.9] mb-4">
                 <AnimatePresence mode="wait">
                   <motion.span key={`name-${index}`} className="inline-block">
-                    {product.name.split("").map((char, i) => (
-                      <motion.span
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.03, duration: 0.3 }}
-                        className="inline-block"
-                        style={{
-                          color:
-                            i < product.name.split(" ")[0].length
-                              ? "white"
-                              : undefined,
-                          backgroundImage:
-                            i >= product.name.split(" ")[0].length
-                              ? "linear-gradient(to right, white, #9ca3af)"
-                              : undefined,
-                          WebkitBackgroundClip:
-                            i >= product.name.split(" ")[0].length
-                              ? "text"
-                              : undefined,
-                          WebkitTextFillColor:
-                            i >= product.name.split(" ")[0].length
-                              ? "transparent"
-                              : undefined,
-                        }}
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </motion.span>
-                    ))}
+                    {product.name.split(" ").map((word, wIdx) => {
+                      const isFirstWord = wIdx === 0;
+                      const wordsBefore = product.name.split(" ").slice(0, wIdx);
+                      const prevCharCount = wordsBefore.reduce((acc, w) => acc + w.length + 1, 0);
+
+                      return (
+                        <span key={wIdx}>
+                          {wIdx > 0 && " "}
+                          <span className="inline-block whitespace-nowrap">
+                            {word.split("").map((char, cIdx) => {
+                              const globalIndex = prevCharCount + cIdx;
+                              return (
+                                <motion.span
+                                  key={cIdx}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: globalIndex * 0.03, duration: 0.3 }}
+                                  className="inline-block"
+                                  style={{
+                                    color: isFirstWord ? "white" : undefined,
+                                    backgroundImage: !isFirstWord
+                                      ? "linear-gradient(to right, white, #9ca3af)"
+                                      : undefined,
+                                    WebkitBackgroundClip: !isFirstWord ? "text" : undefined,
+                                    WebkitTextFillColor: !isFirstWord ? "transparent" : undefined,
+                                  }}
+                                >
+                                  {char}
+                                </motion.span>
+                              );
+                            })}
+                          </span>
+                        </span>
+                      );
+                    })}
                   </motion.span>
                 </AnimatePresence>
               </h1>
@@ -336,7 +342,7 @@ export default function FeaturedHero() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3 }}
                   >
-                    ${quantity > 1 || selectedCut > 0 ? totalPrice : displayPrice.toFixed(2)}
+                    ₹{quantity > 1 || selectedCut > 0 ? totalPrice : displayPrice.toFixed(2)}
                   </motion.span>
                 </AnimatePresence>
                 {" "}

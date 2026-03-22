@@ -43,19 +43,22 @@ export default function ProductModal({ product, isOpen, onClose }) {
 
               <div className="flex flex-col lg:flex-row h-full overflow-y-auto lg:overflow-hidden">
                 {/* Image Section */}
-                <div className="lg:w-1/2 relative h-[300px] lg:h-full bg-slate-900">
+                <div className="lg:w-1/2 relative h-[300px] lg:h-auto overflow-hidden bg-slate-900">
                   <img 
                     src={product.image} 
                     alt={product.name}
-                    className="w-full h-full object-cover opacity-90"
+                    className="absolute top-0 left-0 w-full h-full object-cover object-center"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:bg-gradient-to-r" />
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 h-[60%] pointer-events-none"
+                    style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }} 
+                  />
                   
-                  <div className="absolute bottom-8 left-8 right-8 text-white">
-                    <p className="text-[var(--accent-gold)] text-xs font-bold uppercase tracking-[0.2em] mb-2">Detailed Specifications</p>
-                    <h2 className="text-3xl md:text-5xl font-bold font-serif leading-tight">{product.name}</h2>
+                  <div className="absolute bottom-[24px] left-[24px] right-[24px] text-white z-10">
+                    <p className="text-[var(--accent-gold)] text-xs font-bold uppercase tracking-[0.2em] mb-2 drop-shadow-md">Detailed Specifications</p>
+                    <h2 className="text-3xl md:text-5xl font-bold font-serif leading-tight drop-shadow-xl">{product.name}</h2>
                     {product.scientificName && (
-                      <p className="text-slate-300 italic text-sm mt-2">{product.scientificName}</p>
+                      <p className="text-slate-300 italic text-sm mt-2 drop-shadow-md">{product.scientificName}</p>
                     )}
                   </div>
                 </div>
