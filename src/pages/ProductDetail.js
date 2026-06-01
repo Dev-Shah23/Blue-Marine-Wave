@@ -14,11 +14,23 @@ import {
 import { products } from "../data/products";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import useSeo from "../hooks/useSeo";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const product = products.find((item) => item.id === id);
+
+  useSeo(
+    product
+      ? {
+          title: `${product.name} (${product.scientificName}) — Blue Wave Marine`,
+          description: `${product.shortDescription}. Export-grade ${product.name} from Blue Wave Marine — forms, specifications and certifications. Request a quote.`,
+          canonical: `/product/${product.id}`,
+          image: typeof product.image === "string" ? product.image : undefined,
+        }
+      : { title: "Product — Blue Wave Marine", canonical: "/catalog" }
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);

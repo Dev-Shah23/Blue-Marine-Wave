@@ -98,13 +98,13 @@ export default function Footer() {
               Asia's and Europe's premier gateway to the world's finest seafood harvest. Connecting international fisheries with the region's top importers since 2020.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
+              <a href="#" aria-label="LinkedIn" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
+              <a href="#" aria-label="Instagram" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
+              <a href="#" aria-label="Facebook" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
                 <Facebook className="w-5 h-5" />
               </a>
             </div>
@@ -133,6 +133,7 @@ export default function Footer() {
               <li><a href="/#about" className="hover:text-[var(--accent-gold)] transition-colors">About</a></li>
               <li><a href="/catalog" className="hover:text-[var(--accent-gold)] transition-colors">Catalog</a></li>
               <li><a href="/#contact" className="hover:text-[var(--accent-gold)] transition-colors">Contact</a></li>
+              <li><Link to="/privacy" className="hover:text-[var(--accent-gold)] transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
 

@@ -4,14 +4,18 @@ import { useEffect } from "react";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import CatalogPage from "./pages/CatalogPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "next-themes";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // Don't fight in-page anchor navigation — when there's a hash, the target
+    // page (e.g. Home) scrolls to the section itself.
+    if (!hash) window.scrollTo(0, 0);
+  }, [pathname, hash]);
   return null;
 }
 
@@ -40,11 +44,14 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <GlobalStyles />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalog" element={<CatalogPage />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+          </Routes>
+        </ErrorBoundary>
       </BrowserRouter>
     </ThemeProvider>
   );
