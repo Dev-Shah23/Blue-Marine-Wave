@@ -9,6 +9,7 @@ export const products = [
   {
     id: 'atlantic-salmon',
     name: 'Atlantic Salmon',
+    category: 'Finfish',
     scientificName: 'Salmo salar',
     shortDescription: 'Premium salmon with rich flavor and firm texture',
     forms: ['Whole', 'Fillet', 'Steak', 'Portions'],
@@ -24,6 +25,7 @@ export const products = [
   {
     id: 'king-crab',
     name: 'King Crab',
+    category: 'Shellfish',
     scientificName: 'Paralithodes camtschaticus',
     shortDescription: 'Premium sweet and tender crab meat from icy waters',
     forms: ['Whole', 'Legs & Claws', 'Meat Only'],
@@ -39,6 +41,7 @@ export const products = [
   {
     id: 'pacific-mackerel',
     name: 'Pacific Mackerel',
+    category: 'Finfish',
     scientificName: 'Scomber japonicus',
     shortDescription: 'Wild caught mackerel with rich, distinctive flavor',
     forms: ['Whole Round', 'HGT', 'Fillet'],
@@ -54,6 +57,7 @@ export const products = [
   {
     id: 'tiger-prawns',
     name: 'Tiger Prawns',
+    category: 'Crustacean',
     scientificName: 'Penaeus monodon',
     shortDescription: 'Extra large, succulent prawns with firm meat',
     forms: ['HOSO', 'HLSO', 'PD', 'PDTO'],
@@ -69,6 +73,7 @@ export const products = [
   {
     id: 'premium-squid',
     name: 'Premium Squid',
+    category: 'Cephalopod',
     scientificName: 'Loligo vulgaris',
     shortDescription: 'Tender, sweet calamari perfect for any preparation',
     forms: ['Whole Round', 'Cleaned Tubes', 'Rings & Tentacles'],
@@ -84,6 +89,7 @@ export const products = [
   {
     id: 'black-tiger-shrimp',
     name: 'Black Tiger Shrimp',
+    category: 'Crustacean',
     scientificName: 'Penaeus monodon',
     shortDescription: 'Export quality stripe-patterned tiger shrimp',
     forms: ['HOSO', 'HLSO', 'Cooked'],

@@ -2,9 +2,25 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
 import { CheckCircle, AlertCircle } from 'lucide-react';
+import { z } from 'zod';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Same-origin by default → hits the Vercel function at /api/contact. Only falls
+// back to a cross-origin backend when REACT_APP_BACKEND_URL is explicitly set,
+// so a missing env var can no longer point the form at "undefined/api".
+const API = `${(process.env.REACT_APP_BACKEND_URL || '').replace(/\/$/, '')}/api`;
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, 'Please enter your name'),
+  company: z.string().trim().min(1, 'Please enter your company name'),
+  email: z.string().trim().email('Please enter a valid email address'),
+  phone: z.string().trim().min(5, 'Please enter a valid phone number'),
+  destination_country: z.string().trim().min(1, 'Please enter a destination country'),
+  product_interest: z.string().trim().min(1, 'Please tell us the product of interest'),
+  quantity: z.string().trim().min(1, 'Please enter an estimated quantity'),
+  consent: z.boolean().refine((v) => v === true, {
+    message: 'Please accept the privacy policy to continue',
+  }),
+});
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -16,21 +32,32 @@ export default function Contact() {
     destination_port: '',
     product_interest: '',
     quantity: '',
-    message: ''
+    message: '',
+    consent: false,
+    company_website: '' // honeypot — must stay empty for real users
   });
-  
+
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
+    const { name, type, value, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: type === 'checkbox' ? checked : value
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side validation (the server validates too — this is just fast UX).
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      setStatus({ type: 'error', message: result.error.issues[0].message });
+      return;
+    }
+
     setLoading(true);
     setStatus({ type: '', message: '' });
 
@@ -49,7 +76,9 @@ export default function Contact() {
         destination_port: '',
         product_interest: '',
         quantity: '',
-        message: ''
+        message: '',
+        consent: false,
+        company_website: ''
       });
     } catch (error) {
       setStatus({ 
@@ -272,6 +301,37 @@ export default function Contact() {
                 style={{ transition: 'all 0.3s' }}
                 placeholder="Please share any specific requirements, certifications needed, or questions..."
               />
+            </div>
+
+            {/* Honeypot: hidden from humans. Bots that fill it are silently dropped server-side. */}
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+              <label htmlFor="company_website">Company Website</label>
+              <input
+                type="text"
+                id="company_website"
+                name="company_website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.company_website}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* GDPR consent — required */}
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="consent"
+                name="consent"
+                data-testid="contact-consent-input"
+                checked={formData.consent}
+                onChange={handleChange}
+                className="mt-1 h-4 w-4 accent-[var(--accent-gold)] flex-shrink-0"
+              />
+              <label htmlFor="consent" className="text-sm text-[var(--text-secondary)]">
+                I agree that my details may be used to respond to my enquiry, in line with the{' '}
+                <a href="/privacy" className="text-[var(--accent-gold)] hover:underline">Privacy Policy</a>.
+              </label>
             </div>
 
             <button

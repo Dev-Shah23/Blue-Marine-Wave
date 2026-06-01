@@ -9,8 +9,17 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductModal from '../components/ProductModal';
 import { products } from '../data/products';
+import useSeo from '../hooks/useSeo';
 
 export default function Home() {
+  useSeo({
+    title: 'Blue Wave Marine — Premium Seafood Export',
+    description:
+      "Premium B2B seafood export connecting Asian and European markets with the world's finest salmon, crab, prawns, shrimp, squid and mackerel. ASC, BAP, HACCP & ISO 22000 certified.",
+    canonical: '/',
+    image: 'https://bluewavemarine.in/images/cargo.png',
+  });
+
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();

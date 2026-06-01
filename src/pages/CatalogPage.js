@@ -5,8 +5,16 @@ import Catalog from "@/components/Catalog/Catalog";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import useSeo from "@/hooks/useSeo";
 
 export default function CatalogPage() {
+  useSeo({
+    title: "Seafood Catalog — Blue Wave Marine",
+    description:
+      "Browse Blue Wave Marine's export catalog: Atlantic salmon, king crab, tiger prawns, black tiger shrimp, squid and Pacific mackerel — IQF, bulk and retail packs.",
+    canonical: "/catalog",
+  });
+
   const location = useLocation();
   const navigate = useNavigate();
 
