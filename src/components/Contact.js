@@ -63,9 +63,11 @@ export default function Contact() {
 
     try {
       const response = await axios.post(`${API}/contact`, formData);
-      setStatus({ 
-        type: 'success', 
-        message: 'Thank you! Your quote request has been submitted. We will contact you within 24 hours.' 
+      setStatus({
+        type: 'success',
+        message:
+          response?.data?.message ||
+          'Thank you! Your request has been submitted. We will contact you within 24 hours.'
       });
       setFormData({
         name: '',
@@ -81,9 +83,11 @@ export default function Contact() {
         company_website: ''
       });
     } catch (error) {
-      setStatus({ 
-        type: 'error', 
-        message: 'Failed to submit form. Please try again or contact us directly.' 
+      setStatus({
+        type: 'error',
+        message:
+          error?.response?.data?.message ||
+          'Failed to submit. Please try again or email export@bluewavemarine.in directly.'
       });
       console.error('Form submission error:', error);
     } finally {
