@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Instagram, Linkedin, Facebook } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import logo from "../fwdphotos/logo.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -85,7 +85,7 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 mb-16 items-start">
           {/* Column 1: Brand & Contact */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
@@ -97,35 +97,44 @@ export default function Footer() {
             <p className="text-slate-400 text-sm leading-relaxed italic">
               Asia's and Europe's premier gateway to the world's finest seafood harvest. Connecting international fisheries with the region's top importers since 2020.
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[var(--accent-gold)] hover:border-[var(--accent-gold)] transition-all">
-                <Facebook className="w-5 h-5" />
-              </a>
-            </div>
-            <ul className="space-y-2 text-sm text-slate-400 mt-6">
+            <ul className="space-y-3 text-sm text-slate-400 mt-6">
               <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[var(--accent-gold)]" />
-                <span>export@bluewavemarine.in</span>
+                <Mail className="w-4 h-4 text-[var(--accent-gold)] flex-shrink-0" />
+                <a href="mailto:bluewavemarine07@gmail.com" className="hover:text-[var(--accent-gold)] transition-colors break-all">bluewavemarine07@gmail.com</a>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[var(--accent-gold)]" />
-                <span>+91 8891704553</span>
+                <Phone className="w-4 h-4 text-[var(--accent-gold)] flex-shrink-0" />
+                <a href="tel:+918891704553" className="hover:text-[var(--accent-gold)] transition-colors">+91 8891704553</a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5" />
-                <a href="https://maps.app.goo.gl/uYc3789abJ5titzA8" className="hover:text-[var(--accent-gold)] transition-colors">GIDC Estate,Veraval,Gujurat (362269)</a>
+                <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5 flex-shrink-0" />
+                <a
+                  href="https://maps.app.goo.gl/uYc3789abJ5titzA8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GIDC Estate, Veraval, Gujarat — open in Google Maps"
+                  className="hover:text-[var(--accent-gold)] transition-colors"
+                >
+                  GIDC Estate, Veraval, Gujarat (362269)
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5 flex-shrink-0" />
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Kochi%2C+Kerala%2C+India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Kochi, Kerala, India — open in Google Maps"
+                  className="hover:text-[var(--accent-gold)] transition-colors"
+                >
+                  Kochi, Kerala, India
+                </a>
               </li>
             </ul>
           </div>
 
           {/* Column 2: Quick Links */}
-          <div className="pt-4">
+          <div className="pt-4 md:justify-self-end">
             <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Quick Links</h4>
             <ul className="space-y-4 text-sm text-slate-400">
               <li><a href="/#products" className="hover:text-[var(--accent-gold)] transition-colors">Products</a></li>
@@ -133,18 +142,6 @@ export default function Footer() {
               <li><a href="/#about" className="hover:text-[var(--accent-gold)] transition-colors">About</a></li>
               <li><a href="/catalog" className="hover:text-[var(--accent-gold)] transition-colors">Catalog</a></li>
               <li><a href="/#contact" className="hover:text-[var(--accent-gold)] transition-colors">Contact</a></li>
-            </ul>
-          </div>
-
-          {/* Column 3: Certifications */}
-          <div className="pt-4">
-            <h4 className="text-lg font-bold mb-6 font-serif border-b border-[var(--accent-gold)]/30 pb-2 inline-block">Certifications</h4>
-            <ul className="space-y-4 text-sm text-slate-400">
-              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> ISO 22000</li>
-              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> HACCP Certified</li>
-              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> BAP Certified</li>
-              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> MSC Chain of Custody</li>
-              <li className="flex items-center gap-2 whitespace-nowrap"><span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-gold)]" /> ASC Certified</li>
             </ul>
           </div>
         </div>

@@ -16,6 +16,10 @@ export default function Home() {
   const location = useLocation();
 
   useEffect(() => {
+    document.title = "Blue Wave Marine — Premium Seafood Exports from India";
+  }, []);
+
+  useEffect(() => {
     if (location.hash) {
       const id = location.hash.substring(1); // remove '#'
       // Small timeout to ensure DOM is ready and painted

@@ -87,7 +87,7 @@ export default function Quality() {
             Every product undergoes strict inspection protocols, temperature monitoring, and traceability tracking. 
             Our partnerships with certified fisheries and aquaculture farms ensure sustainable sourcing practices. 
             With ISO 22000, HACCP, and various international certifications, we meet the highest global standards 
-            while providing the flexibility Asian importers need to serve their diverse markets.
+            while providing the flexibility needed to serve their diverse markets.
           </p>
         </motion.div>
       </div>

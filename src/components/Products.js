@@ -93,26 +93,9 @@ export default function Products({ onProductClick }) {
                 </div>
 
                 {/* Short Description */}
-                <p className="text-[var(--text-secondary)] text-sm mb-6 flex-grow">
+                <p className="text-[var(--text-secondary)] text-sm mb-8 flex-grow">
                   {product.shortDescription}
                 </p>
-
-                {/* Available Forms */}
-                <div className="mb-8 space-y-2">
-                  {product.forms.slice(0, 3).map((form) => (
-                    <div
-                      key={form}
-                      className="flex justify-between text-xs border-b border-[var(--product-border)] pb-2"
-                    >
-                      <span className="text-[var(--text-tertiary)] font-medium">
-                        Processing
-                      </span>
-                      <span className="text-[var(--text-secondary)] font-bold uppercase tracking-wide">
-                        {form}
-                      </span>
-                    </div>
-                  ))}
-                </div>
 
                 {/* Button */}
                 <button className="relative overflow-hidden w-full border border-[var(--product-border)] text-[var(--text-primary)] py-4 px-6 uppercase text-xs font-bold tracking-[0.2em] flex items-center justify-between transition-all duration-300 hover:bg-[var(--accent-gold)] hover:text-[var(--btn-text)] hover:border-[var(--accent-gold)] group/btn animate-pulse-click">

@@ -1,99 +1,176 @@
-import salmonCatalog from '../fwdphotos/salmon_catalog.png';
-import crabCatalog from '../fwdphotos/crab_catalog.png';
-import mackerelCatalog from '../fwdphotos/mackrel_catalog.png';
-import prawnsCatalog from '../fwdphotos/prawns_catalog.png';
-import squidCatalog from '../fwdphotos/squid_photo_catalog.png';
-import shrimpCatalog from '../fwdphotos/shrimp_catalog.png';
+// ──────────────────────────────────────────────────────────────
+// Blue Wave Marine — Master Product Catalog (single source of truth)
+// Feeds: homepage grid, /catalog grid + filters, slideshow,
+//        product modal, product detail page, and the quote form.
+// Every product is sourced and processed in India (Origin: India).
+// Order is curated so the homepage featured row (first 3) and the
+// showcase (first 5) span all categories for visual variety.
+// ──────────────────────────────────────────────────────────────
+import yellowfinTuna from '../assets/products/yellowfin-tuna.jpg';
+import vannameiShrimp from '../assets/products/vannamei-shrimp.jpg';
+import squidWhole from '../assets/products/squid-whole.jpg';
+import indianMackerel from '../assets/products/indian-mackerel.jpg';
+import mahiMahi from '../assets/products/mahi-mahi.jpg';
+import squidWholeCleaned from '../assets/products/squid-whole-cleaned.jpg';
+import squidRings from '../assets/products/squid-rings.jpg';
+import cuttlefishWhole from '../assets/products/cuttlefish-whole.jpg';
+import cuttlefishWholeCleaned from '../assets/products/cuttlefish-whole-cleaned.jpg';
+
+// Catalog category taxonomy (drives the catalog filter sidebar)
+export const CATEGORIES = ['Finfish', 'Shrimp', 'Cephalopods'];
 
 export const products = [
   {
-    id: 'atlantic-salmon',
-    name: 'Atlantic Salmon',
-    scientificName: 'Salmo salar',
-    shortDescription: 'Premium salmon with rich flavor and firm texture',
-    forms: ['Whole', 'Fillet', 'Steak', 'Portions'],
-    image: salmonCatalog,
-    fullDescription: 'Our Atlantic Salmon is sourced from cold, pristine waters, offering exceptional flavor and high Omega-3 content. Perfectly processed and frozen to lock in freshness.',
+    id: 'yellowfin-tuna',
+    name: 'Yellowfin Tuna',
+    scientificName: 'Thunnus albacares',
+    category: 'Finfish',
+    shortDescription: 'Deep-water yellowfin with firm, ruby-red meat for premium export markets.',
+    forms: ['Whole', 'Loin', 'Saku', 'Steak'],
+    image: yellowfinTuna,
+    fullDescription:
+      'Line-caught from the warm waters of the Indian Ocean, our Yellowfin Tuna is graded for colour, firmness and fat content, then blast-frozen to lock in sashimi-grade quality. Available whole or cut to your specification for global distribution.',
     specifications: {
-      origin: 'North Atlantic',
-      season: 'Year-round',
+      origin: 'India',
+      grade: 'Export Grade A / Sashimi',
+      sizes: '10–20 kg, 20–40 kg, 40 kg+',
       packaging: 'IQF, Vacuum Sealed, Bulk',
-      certifications: ['ASC Certified', 'BAP', 'ISO 22000']
-    }
+    },
   },
   {
-    id: 'king-crab',
-    name: 'King Crab',
-    scientificName: 'Paralithodes camtschaticus',
-    shortDescription: 'Premium sweet and tender crab meat from icy waters',
-    forms: ['Whole', 'Legs & Claws', 'Meat Only'],
-    image: crabCatalog,
-    fullDescription: 'Harvested from the icy waters of the Bering Sea, our King Crab is known for its sweet, tender meat and impressive size. Perfect for luxury markets and high-end dining.',
+    id: 'vannamei-shrimp',
+    name: 'Vannamei Shrimp',
+    scientificName: 'Litopenaeus vannamei',
+    category: 'Shrimp',
+    shortDescription: 'Farm-raised vannamei with consistent sizing, firm meat and clean flavour.',
+    forms: ['HOSO', 'HLSO', 'PD', 'PDTO', 'Cooked'],
+    image: vannameiShrimp,
+    fullDescription:
+      'Responsibly farmed in Indian aquaculture estates and processed to international standards, our Vannamei Shrimp offers reliable count consistency and excellent yield. Available raw or cooked, in any peeled or shell-on format.',
     specifications: {
-      origin: 'Bering Sea, Alaska',
-      sizes: '9-12 lbs, 12-14 lbs, 14+ lbs',
-      packaging: 'Frozen sections, Cooked/Raw',
-      certifications: ['MSC', 'RFM']
-    }
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '16/20, 21/25, 26/30, 31/40, 41/50 per kg',
+      packaging: 'IQF, 1kg/2kg Blocks, Retail Packs',
+    },
   },
   {
-    id: 'pacific-mackerel',
-    name: 'Pacific Mackerel',
-    scientificName: 'Scomber japonicus',
-    shortDescription: 'Wild caught mackerel with rich, distinctive flavor',
-    forms: ['Whole Round', 'HGT', 'Fillet'],
-    image: mackerelCatalog,
-    fullDescription: 'Rich in healthy fats and packed with flavor, our wild-caught Pacific Mackerel is a versatile choice for grilling, smoking, or canning. Flash-frozen to preserve quality.',
+    id: 'squid-whole',
+    name: 'Squid (Whole)',
+    scientificName: 'Loligo spp.',
+    category: 'Cephalopods',
+    shortDescription: 'Fresh whole squid, fast-frozen at catch for tender, sweet texture.',
+    forms: ['Whole'],
+    image: squidWhole,
+    fullDescription:
+      'Harvested along the Indian coastline and processed within hours of landing, our whole squid retains its natural sweetness and firm bite. Ideal for buyers who clean and portion in-market.',
     specifications: {
-      origin: 'Pacific Ocean',
-      season: 'Winter/Spring',
-      packaging: 'Block frozen, IQF',
-      certifications: ['HACCP', 'ISO 22000']
-    }
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: 'U5, 5/10, 10/20, 20/40 cm',
+      packaging: 'Block Frozen, IQF',
+    },
   },
   {
-    id: 'tiger-prawns',
-    name: 'Tiger Prawns',
-    scientificName: 'Penaeus monodon',
-    shortDescription: 'Extra large, succulent prawns with firm meat',
-    forms: ['HOSO', 'HLSO', 'PD', 'PDTO'],
-    image: prawnsCatalog,
-    fullDescription: 'Our Tiger Prawns are known for their massive size and firm, sweet meat. Carefully processed to maintain their striking appearance and exceptional quality.',
+    id: 'indian-mackerel',
+    name: 'Indian Mackerel',
+    scientificName: 'Rastrelliger kanagurta',
+    category: 'Finfish',
+    shortDescription: 'Wild-caught Indian mackerel, rich in Omega-3 with a bold, distinctive flavour.',
+    forms: ['Whole', 'Whole Round'],
+    image: indianMackerel,
+    fullDescription:
+      'A staple of the Arabian Sea, our Indian Mackerel is flash-frozen whole-round to preserve its high oil content and firm flesh. Perfect for grilling, canning and curry-cut markets across Asia, Africa and the Middle East.',
     specifications: {
-      origin: 'Southeast Asia',
-      sizes: '8/12, 13/15, 16/20 per kg',
-      packaging: 'IQF blocks, Retail packs',
-      certifications: ['ASC', 'BAP', 'HACCP']
-    }
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '4–6, 6–8, 8–10, 10–12 pcs/kg',
+      packaging: 'Block Frozen, IQF',
+    },
   },
   {
-    id: 'premium-squid',
-    name: 'Premium Squid',
-    scientificName: 'Loligo vulgaris',
-    shortDescription: 'Tender, sweet calamari perfect for any preparation',
-    forms: ['Whole Round', 'Cleaned Tubes', 'Rings & Tentacles'],
-    image: squidCatalog,
-    fullDescription: 'Our premium squid is quickly processed after catch to guarantee the most tender texture. Ideal for frying, grilling, or culinary preparations in Mediterranean and Asian cuisines.',
+    id: 'mahi-mahi',
+    name: 'Mahi Mahi',
+    scientificName: 'Coryphaena hippurus',
+    category: 'Finfish',
+    shortDescription: 'Lean, mild white-fleshed mahi mahi with a clean flavour and firm flake.',
+    forms: ['Whole', 'Fillet', 'Portions', 'Loin'],
+    image: mahiMahi,
+    fullDescription:
+      'Caught in the Indian Ocean, our Mahi Mahi (dorado) offers versatile, lean white meat that holds beautifully on the grill or pan. Available whole or skin-on/skinless fillets and portions to specification.',
     specifications: {
-      origin: 'Mediterranean',
-      sizes: 'U10, 10/20, 20/40 cm',
-      packaging: 'Block frozen, IQF rings',
-      certifications: ['HACCP', 'ISO 22000']
-    }
+      origin: 'India',
+      grade: 'Export Grade A',
+      sizes: '1–3 kg, 3–5 kg, 5 kg+',
+      packaging: 'IQF, Vacuum Sealed, Bulk',
+    },
   },
   {
-    id: 'black-tiger-shrimp',
-    name: 'Black Tiger Shrimp',
-    scientificName: 'Penaeus monodon',
-    shortDescription: 'Export quality stripe-patterned tiger shrimp',
-    forms: ['HOSO', 'HLSO', 'Cooked'],
-    image: shrimpCatalog,
-    fullDescription: 'Black Tiger Shrimp deliver sweet, firm meat. Carefully farmed and processed to maintain maximum freshness, perfect for high-end restaurants.',
+    id: 'squid-whole-cleaned',
+    name: 'Squid (Whole Cleaned)',
+    scientificName: 'Loligo spp.',
+    category: 'Cephalopods',
+    shortDescription: 'Whole cleaned squid tubes — skinned, gutted and ready to cook.',
+    forms: ['Whole Cleaned'],
+    image: squidWholeCleaned,
+    fullDescription:
+      'Our whole cleaned squid is hand-processed to remove the skin, head and viscera, leaving a pristine tube ready for the kitchen. A labour-saving, high-yield format trusted by HORECA and retail importers.',
     specifications: {
-      origin: 'Southeast Asia',
-      sizes: '21/25, 26/30, 31/40 per kg',
-      packaging: 'IQF 1kg/2kg blocks',
-      certifications: ['ASC', 'BAP', 'HACCP']
-    }
-  }
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: 'U5, 5/10, 10/20, 20/40 cm',
+      packaging: 'IQF, Interleaved, Vacuum',
+    },
+  },
+  {
+    id: 'squid-rings',
+    name: 'Squid Rings',
+    scientificName: 'Loligo spp.',
+    category: 'Cephalopods',
+    shortDescription: 'Uniformly cut squid rings — portion-ready for fryers and food service.',
+    forms: ['Rings'],
+    image: squidRings,
+    fullDescription:
+      'Cut from cleaned squid tubes to a consistent width, our squid rings are IQF-frozen for free-flow convenience. A high-demand value-added format for quick-service restaurants and retail calamari programmes.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '3/5 cm, 5/8 cm rings',
+      packaging: 'IQF, Retail Packs, Bulk',
+    },
+  },
+  {
+    id: 'cuttlefish-whole',
+    name: 'Cuttlefish (Whole)',
+    scientificName: 'Sepia spp.',
+    category: 'Cephalopods',
+    shortDescription: 'Whole cuttlefish, fast-frozen to preserve firm texture and bright colour.',
+    forms: ['Whole'],
+    image: cuttlefishWhole,
+    fullDescription:
+      'Our whole cuttlefish is sourced from Indian waters and frozen at peak freshness. Prized in Mediterranean and East-Asian cuisines, it delivers a meaty bite and excellent processing yield.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: 'U5, 5/10, 10/20, 20/40 cm',
+      packaging: 'Block Frozen, IQF',
+    },
+  },
+  {
+    id: 'cuttlefish-whole-cleaned',
+    name: 'Cuttlefish (Whole Cleaned)',
+    scientificName: 'Sepia spp.',
+    category: 'Cephalopods',
+    shortDescription: 'Cleaned cuttlefish — bone, ink and skin removed, ready to portion.',
+    forms: ['Whole Cleaned'],
+    image: cuttlefishWholeCleaned,
+    fullDescription:
+      'Hand-cleaned to remove the cuttlebone, ink sac and skin, our whole cleaned cuttlefish is a premium, high-yield format. Delivered IQF for consistent quality from our facility to your market.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: 'U5, 5/10, 10/20, 20/40 cm',
+      packaging: 'IQF, Interleaved, Vacuum',
+    },
+  },
 ];

@@ -11,6 +11,10 @@ export default function CatalogPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = "Product Catalog — Blue Wave Marine";
+  }, []);
+
+  useEffect(() => {
     // Strip hash and scroll to top on mount
     if (location.hash) {
       navigate(location.pathname, { replace: true });

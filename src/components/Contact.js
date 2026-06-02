@@ -1,60 +1,142 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { CheckCircle, AlertCircle, Check, ChevronDown, X, Search } from 'lucide-react';
+import { products } from '../data/products';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+const PACKAGING_OPTIONS = [
+  'IQF (Individually Quick Frozen)',
+  'Block Frozen',
+  'Vacuum Sealed',
+  'Retail Packs',
+  'Bulk / Master Cartons',
+  'Custom (specify in notes)',
+];
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     company: '',
+    country: '',
     email: '',
     phone: '',
-    destination_country: '',
-    destination_port: '',
-    product_interest: '',
     quantity: '',
-    message: ''
+    packaging: '',
+    notes: '',
   });
-  
+
+  const [selectedProducts, setSelectedProducts] = useState([]); // array of product ids
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [productError, setProductError] = useState(false);
+
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
 
+  const dropdownRef = useRef(null);
+
+  // Close dropdown on outside click / Escape
+  useEffect(() => {
+    const onClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') setDropdownOpen(false);
+    };
+    document.addEventListener('mousedown', onClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return products;
+    return products.filter((p) =>
+      `${p.name} ${p.scientificName} ${p.category}`.toLowerCase().includes(q)
+    );
+  }, [search]);
+
+  const selectedObjects = useMemo(
+    () => products.filter((p) => selectedProducts.includes(p.id)),
+    [selectedProducts]
+  );
+
+  const toggleProduct = (id) => {
+    setProductError(false);
+    setSelectedProducts((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
   const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const resetForm = () => {
     setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+      name: '',
+      company: '',
+      country: '',
+      email: '',
+      phone: '',
+      quantity: '',
+      packaging: '',
+      notes: '',
     });
+    setSelectedProducts([]);
+    setSearch('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (selectedProducts.length === 0) {
+      setProductError(true);
+      setStatus({ type: 'error', message: 'Please select at least one product before submitting.' });
+      return;
+    }
+
     setLoading(true);
     setStatus({ type: '', message: '' });
 
+    // Keep the exact payload shape the backend expects (backend-compatible).
+    const productList = selectedObjects.map((p) => `${p.name} (${p.scientificName})`);
+    const payload = {
+      name: formData.name,
+      company: formData.company,
+      email: formData.email,
+      phone: formData.phone,
+      destination_country: formData.country,
+      destination_port: '',
+      product_interest: productList.join(', '),
+      quantity: formData.quantity,
+      message: [
+        formData.packaging ? `Preferred Packaging: ${formData.packaging}` : '',
+        formData.notes,
+      ]
+        .filter(Boolean)
+        .join('\n\n'),
+    };
+
     try {
-      const response = await axios.post(`${API}/contact`, formData);
-      setStatus({ 
-        type: 'success', 
-        message: 'Thank you! Your quote request has been submitted. We will contact you within 24 hours.' 
+      await axios.post(`${API}/contact`, payload);
+      setStatus({
+        type: 'success',
+        message: 'Thank you! Your quote request has been submitted. We will contact you within 24 hours.',
       });
-      setFormData({
-        name: '',
-        company: '',
-        email: '',
-        phone: '',
-        destination_country: '',
-        destination_port: '',
-        product_interest: '',
-        quantity: '',
-        message: ''
-      });
+      resetForm();
     } catch (error) {
-      setStatus({ 
-        type: 'error', 
-        message: 'Failed to submit form. Please try again or contact us directly.' 
+      setStatus({
+        type: 'error',
+        message: 'Failed to submit form. Please try again or contact us directly.',
       });
       console.error('Form submission error:', error);
     } finally {
@@ -62,8 +144,16 @@ export default function Contact() {
     }
   };
 
+  const inputClass =
+    'bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] transition-all';
+  const labelClass = 'block text-sm font-medium text-[var(--text-secondary)] mb-2';
+
   return (
-    <section id="contact" data-testid="contact-section" className="py-20 md:py-32 bg-[var(--contact-bg)] text-[var(--text-primary)] transition-colors duration-500">
+    <section
+      id="contact"
+      data-testid="contact-section"
+      className="py-20 md:py-32 bg-[var(--contact-bg)] text-[var(--text-primary)] transition-colors duration-500"
+    >
       <div className="max-w-4xl mx-auto px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,14 +165,14 @@ export default function Contact() {
           <p className="text-sm font-medium tracking-wide uppercase text-[var(--accent-gold)] mb-4">
             Get In Touch
           </p>
-          <h2 
+          <h2
             className="text-3xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)] mb-4"
             style={{ fontFamily: 'Manrope, sans-serif' }}
           >
             Request a Quote
           </h2>
           <p className="text-lg md:text-xl leading-relaxed text-[var(--text-secondary)]">
-            Share your requirements and we'll provide a detailed proposal
+            Select the products you need and we'll send a detailed export proposal
           </p>
         </motion.div>
 
@@ -94,11 +184,11 @@ export default function Contact() {
           className="bg-[var(--card-bg)] rounded-2xl p-8 md:p-12 shadow-sm border border-[var(--card-border)] backdrop-blur-md"
         >
           {status.message && (
-            <div 
+            <div
               data-testid={status.type === 'success' ? 'success-message' : 'error-message'}
               className={`mb-6 p-4 rounded-lg flex items-start gap-3 ${
-                status.type === 'success' 
-                  ? 'bg-green-50 text-green-800 border border-green-200' 
+                status.type === 'success'
+                  ? 'bg-green-50 text-green-800 border border-green-200'
                   : 'bg-red-50 text-red-800 border border-red-200'
               }`}
             >
@@ -114,163 +204,210 @@ export default function Contact() {
           <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  data-testid="contact-name-input"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="John Doe"
-                />
+                <label htmlFor="name" className={labelClass}>Full Name *</label>
+                <input type="text" id="name" name="name" data-testid="contact-name-input" required
+                  value={formData.name} onChange={handleChange} className={inputClass} placeholder="John Doe" />
               </div>
 
               <div>
-                <label htmlFor="company" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Company Name *
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  data-testid="contact-company-input"
-                  required
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="ABC Trading Co."
-                />
+                <label htmlFor="company" className={labelClass}>Company Name *</label>
+                <input type="text" id="company" name="company" data-testid="contact-company-input" required
+                  value={formData.company} onChange={handleChange} className={inputClass} placeholder="ABC Trading Co." />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  data-testid="contact-email-input"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="john@example.com"
-                />
+                <label htmlFor="email" className={labelClass}>Email Address *</label>
+                <input type="email" id="email" name="email" data-testid="contact-email-input" required
+                  value={formData.email} onChange={handleChange} className={inputClass} placeholder="john@example.com" />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  data-testid="contact-phone-input"
-                  required
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="+65 1234 5678"
-                />
+                <label htmlFor="phone" className={labelClass}>Phone / WhatsApp *</label>
+                <input type="tel" id="phone" name="phone" data-testid="contact-phone-input" required
+                  value={formData.phone} onChange={handleChange} className={inputClass} placeholder="+65 1234 5678" />
               </div>
 
               <div>
-                <label htmlFor="destination_country" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Destination Country *
-                </label>
-                <input
-                  type="text"
-                  id="destination_country"
-                  name="destination_country"
-                  data-testid="contact-country-input"
-                  required
-                  value={formData.destination_country}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="Singapore"
-                />
+                <label htmlFor="country" className={labelClass}>Destination Country *</label>
+                <input type="text" id="country" name="country" data-testid="contact-country-input" required
+                  value={formData.country} onChange={handleChange} className={inputClass} placeholder="Singapore" />
               </div>
 
               <div>
-                <label htmlFor="destination_port" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Destination Port
-                </label>
-                <input
-                  type="text"
-                  id="destination_port"
-                  name="destination_port"
-                  data-testid="contact-port-input"
-                  value={formData.destination_port}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="Port of Singapore"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="product_interest" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Product of Interest *
-                </label>
-                <input
-                  type="text"
-                  id="product_interest"
-                  name="product_interest"
-                  data-testid="contact-product-input"
-                  required
-                  value={formData.product_interest}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="Black Tiger Shrimp"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="quantity" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                  Estimated Quantity *
-                </label>
-                <input
-                  type="text"
-                  id="quantity"
-                  name="quantity"
-                  data-testid="contact-quantity-input"
-                  required
-                  value={formData.quantity}
-                  onChange={handleChange}
-                  className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)]"
-                  style={{ transition: 'all 0.3s' }}
-                  placeholder="1000 kg/month"
-                />
+                <label htmlFor="quantity" className={labelClass}>Quantity Required *</label>
+                <input type="text" id="quantity" name="quantity" data-testid="contact-quantity-input" required
+                  value={formData.quantity} onChange={handleChange} className={inputClass} placeholder="1000 kg/month" />
               </div>
             </div>
 
+            {/* ── Products Required — searchable multi-select ── */}
+            <div ref={dropdownRef} className="relative">
+              <label className={labelClass}>Products Required *</label>
+
+              <div
+                onClick={() => setDropdownOpen((o) => !o)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setDropdownOpen((o) => !o);
+                  }
+                }}
+                data-testid="contact-products-control"
+                aria-haspopup="listbox"
+                aria-expanded={dropdownOpen}
+                className={`min-h-[3.25rem] cursor-pointer bg-[var(--input-bg)] border rounded-lg px-3 py-2.5 flex flex-wrap gap-2 items-center transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent-gold)] ${
+                  productError && selectedProducts.length === 0
+                    ? 'border-red-400'
+                    : 'border-[var(--input-border)]'
+                }`}
+              >
+                {selectedObjects.length === 0 && (
+                  <span className="text-[var(--input-placeholder)] px-1">Select one or more products…</span>
+                )}
+
+                {selectedObjects.map((p) => (
+                  <span
+                    key={p.id}
+                    className="flex items-center gap-1 bg-[var(--accent-gold)]/15 text-[var(--accent-gold)] border border-[var(--accent-gold)]/30 rounded-full pl-3 pr-1.5 py-1 text-xs font-semibold"
+                  >
+                    {p.name}
+                    <button
+                      type="button"
+                      aria-label={`Remove ${p.name}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleProduct(p.id);
+                      }}
+                      className="hover:bg-[var(--accent-gold)]/20 rounded-full p-0.5"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </span>
+                ))}
+
+                <ChevronDown
+                  className={`ml-auto w-5 h-5 text-[var(--text-secondary)] flex-shrink-0 transition-transform ${
+                    dropdownOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
+
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute z-30 mt-2 w-full bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl shadow-2xl overflow-hidden"
+                  >
+                    <div className="p-2 border-b border-[var(--card-border)]/40">
+                      <div className="flex items-center gap-2 px-2 bg-[var(--input-bg)] rounded-lg">
+                        <Search className="w-4 h-4 text-[var(--text-secondary)] flex-shrink-0" />
+                        <input
+                          autoFocus
+                          type="text"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          placeholder="Search products…"
+                          data-testid="contact-products-search"
+                          className="w-full bg-transparent py-2.5 text-sm text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="max-h-64 overflow-y-auto custom-scrollbar" role="listbox" aria-multiselectable="true">
+                      {filteredProducts.length === 0 ? (
+                        <p className="px-4 py-6 text-center text-sm text-[var(--text-secondary)]">
+                          No products found
+                        </p>
+                      ) : (
+                        filteredProducts.map((p) => {
+                          const checked = selectedProducts.includes(p.id);
+                          return (
+                            <button
+                              type="button"
+                              key={p.id}
+                              role="option"
+                              aria-selected={checked}
+                              onClick={() => toggleProduct(p.id)}
+                              className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[var(--accent-gold)]/10 transition-colors"
+                            >
+                              <span
+                                className={`w-5 h-5 rounded border flex items-center justify-center flex-shrink-0 ${
+                                  checked
+                                    ? 'bg-[var(--accent-gold)] border-[var(--accent-gold)]'
+                                    : 'border-[var(--input-border)]'
+                                }`}
+                              >
+                                {checked && <Check className="w-3.5 h-3.5 text-white" />}
+                              </span>
+                              <span className="flex-1 min-w-0">
+                                <span className="block text-sm font-semibold text-[var(--text-primary)]">
+                                  {p.name}{' '}
+                                  <span className="font-normal italic text-[var(--text-secondary)]">
+                                    ({p.scientificName})
+                                  </span>
+                                </span>
+                                <span className="block text-xs text-[var(--text-tertiary)]">{p.category}</span>
+                              </span>
+                            </button>
+                          );
+                        })
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between px-4 py-2.5 border-t border-[var(--card-border)]/40 text-xs">
+                      <span className="text-[var(--text-secondary)]">
+                        {selectedProducts.length} selected
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setDropdownOpen(false)}
+                        className="text-[var(--accent-gold)] font-semibold hover:underline"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {productError && selectedProducts.length === 0 && (
+                <p className="mt-2 text-sm text-red-500">Please select at least one product.</p>
+              )}
+            </div>
+
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                Additional Requirements
-              </label>
+              <label htmlFor="packaging" className={labelClass}>Preferred Packaging</label>
+              <select
+                id="packaging"
+                name="packaging"
+                data-testid="contact-packaging-input"
+                value={formData.packaging}
+                onChange={handleChange}
+                className={`${inputClass} cursor-pointer`}
+              >
+                <option value="">Select packaging (optional)…</option>
+                {PACKAGING_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="notes" className={labelClass}>Additional Notes</label>
               <textarea
-                id="message"
-                name="message"
+                id="notes"
+                name="notes"
                 data-testid="contact-message-input"
-                value={formData.message}
+                value={formData.notes}
                 onChange={handleChange}
                 rows={5}
-                className="bg-[var(--input-bg)] border border-[var(--input-border)] focus:ring-2 focus:ring-[var(--accent-gold)] focus:border-[var(--accent-gold)] focus:outline-none rounded-lg px-4 py-3 w-full text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] resize-none"
-                style={{ transition: 'all 0.3s' }}
-                placeholder="Please share any specific requirements, certifications needed, or questions..."
+                className={`${inputClass} resize-none`}
+                placeholder="Please share any specific requirements, sizes/grades, certifications needed, or questions..."
               />
             </div>
 

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, CheckCircle, Info, ChevronRight } from "lucide-react";
+import { X, Info, ChevronRight } from "lucide-react";
 
 export default function ProductModal({ product, isOpen, onClose }) {
   if (!product) return null;
@@ -74,32 +74,18 @@ export default function ProductModal({ product, isOpen, onClose }) {
                       </p>
                     </div>
 
-                    {/* Forms & Specs */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div>
-                        <h4 className="text-[var(--accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Processing Forms</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {product.forms.map(form => (
-                            <span 
-                              key={form} 
-                              className="px-3 py-1.5 bg-[var(--text-primary)]/5 rounded-lg text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] border border-[var(--card-border)]/20"
-                            >
-                              {form}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="text-[var(--accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Core Attributes</h4>
-                        <div className="space-y-2">
-                          {['HACCP Certified', 'Sustainably Sourced', 'Export Grade'].map(cert => (
-                            <div key={cert} className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                              <CheckCircle className="w-4 h-4 text-green-500" />
-                              <span>{cert}</span>
-                            </div>
-                          ))}
-                        </div>
+                    {/* Processing Forms */}
+                    <div>
+                      <h4 className="text-[var(--accent-gold)] text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Processing Forms</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {product.forms.map(form => (
+                          <span
+                            key={form}
+                            className="px-3 py-1.5 bg-[var(--text-primary)]/5 rounded-lg text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] border border-[var(--card-border)]/20"
+                          >
+                            {form}
+                          </span>
+                        ))}
                       </div>
                     </div>
 

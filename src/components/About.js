@@ -1,7 +1,7 @@
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { CheckCircle } from 'lucide-react';
-import fishermen from "../fwdphotos/Fisherman image.jpg"
+import owner from "../assets/owner.jpg";
 
 export default function About() {
   const countRef = useRef(null);
@@ -12,7 +12,7 @@ export default function About() {
 
   useEffect(() => {
     if (isInView) {
-      count.set(4);
+      count.set(40);
     }
   }, [isInView, count]);
 
@@ -34,18 +34,15 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-block overflow-hidden relative mb-4">
-              <motion.p 
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
-                className="text-sm font-bold tracking-widest uppercase text-[var(--accent-gold)] whitespace-nowrap border-r-2 border-[var(--accent-gold)] pr-1"
-                style={{ animation: 'blink-caret .75s step-end infinite' }}
-              >
-                About Our Heritage
-              </motion.p>
-            </div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-sm font-bold tracking-widest uppercase text-[var(--accent-gold)] mb-4"
+            >
+              About Our Heritage
+            </motion.p>
 
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
@@ -67,7 +64,7 @@ export default function About() {
             
             <div className="space-y-6 text-base leading-relaxed text-[var(--text-secondary)] mb-8 transition-colors duration-500">
               <p>
-                Blue Wave Marine Company is built on a proud 60-year legacy in the seafood industry. Our journey began with our grandfather,
+                Blue Wave Marine Company is built on a proud 40-year legacy in the seafood industry. Our journey began with our grandfather,
                 Mr. Antony, who owned and operated three fishing boats, laying the foundation of trust, quality, and honest trade.
                 The next generation expanded the business by establishing a seafood processing unit and growing into supply operations. 
                 With hands-on industry experience and exposure to export-oriented factories, we developed strong expertise in quality standards and global market requirements.
@@ -113,25 +110,44 @@ export default function About() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative"
+            className="relative flex justify-center lg:justify-end"
           >
-            {/* Image with Ken Burns Effect */}
-            <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[var(--card-border)]/20">
-              <img 
-                src={fishermen}
-                alt="Blue Wave Marine operations"
-                className="w-full h-full object-cover animate-ken-burns"
-              />
-            </div>
-            
-            <div 
-              ref={countRef}
-              className="absolute -bottom-6 -left-6 bg-[var(--card-bg)]/90 backdrop-blur-md text-[var(--text-primary)] p-8 rounded-2xl shadow-xl max-w-xs border border-[var(--card-border)] transition-colors duration-500"
-            >
-              <p className="text-4xl font-bold mb-2 flex items-center font-serif">
-                <motion.span>{displayCount}</motion.span>+
-              </p>
-              <p className="text-lg text-[var(--text-secondary)] transition-colors duration-500">Years serving Asian and European importers</p>
+            <div className="relative w-full max-w-sm">
+              {/* Decorative gold frame accent */}
+              <div className="absolute -inset-3 rounded-3xl border border-[var(--accent-gold)]/20 pointer-events-none hidden sm:block" />
+
+              {/* Owner Portrait — passport-style, elegantly framed */}
+              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-[var(--card-border)]/30 bg-slate-100">
+                <img
+                  src={owner}
+                  alt="Founder of Blue Wave Marine"
+                  className="w-full h-full object-cover object-top"
+                />
+                {/* Caption gradient + label */}
+                <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
+                <div className="absolute bottom-5 left-6 right-6 text-white">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--accent-gold)] mb-1">
+                    Our Leadership
+                  </p>
+                  <p className="text-xl font-bold font-serif leading-tight drop-shadow-md">
+                    Founder &amp; Managing Director
+                  </p>
+                  <p className="text-xs text-slate-300 italic mt-0.5">Blue Wave Marine</p>
+                </div>
+              </div>
+
+              {/* Floating legacy stat badge */}
+              <div
+                ref={countRef}
+                className="absolute -top-6 -right-3 sm:-right-6 bg-[var(--card-bg)]/95 backdrop-blur-md text-[var(--text-primary)] px-6 py-4 rounded-2xl shadow-xl border border-[var(--card-border)] transition-colors duration-500"
+              >
+                <p className="text-4xl font-bold flex items-center font-serif text-[var(--accent-gold)]">
+                  <motion.span>{displayCount}</motion.span>+
+                </p>
+                <p className="text-xs text-[var(--text-secondary)] max-w-[9rem] leading-snug mt-1 transition-colors duration-500">
+                  Years of trusted seafood trade
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>

@@ -1,74 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import ProductModal from "../ProductModal";
-import { products as allProducts } from "../../data/products";
-
-const catalogRegionMapping = {
-  "Atlantic Salmon": "North Atlantic",
-  "King Crab": "Arctic Circle",
-  "Pacific Mackerel": "Pacific Coast",
-  "Tiger Prawns": "Pacific Coast",
-  "Premium Squid": "Mediterranean",
-  "Black Tiger Shrimp": "Pacific Coast"
-};
-
-const catalogCertifiedMapping = {
-  "Atlantic Salmon": true,
-  "King Crab": true,
-  "Pacific Mackerel": false,
-  "Tiger Prawns": true,
-  "Premium Squid": false,
-  "Black Tiger Shrimp": true
-};
-
-const products = allProducts.map((p, index) => ({
-  ...p,
-  id: index,
-  region: catalogRegionMapping[p.name] || "Pacific Coast",
-  certified: catalogCertifiedMapping[p.name] || false,
-  image: p.image
-}));
-
-const ALL_REGIONS = ["North Atlantic", "Pacific Coast", "Mediterranean", "Arctic Circle"];
+import { products as allProducts, CATEGORIES } from "../../data/products";
 
 export default function CatalogGrid() {
   const [loadedImages, setLoadedImages] = useState({});
-  const [selectedRegions, setSelectedRegions] = useState([]);
-  const [mscOnly, setMscOnly] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleImageLoad = (id) => {
     setLoadedImages((prev) => ({ ...prev, [id]: true }));
   };
 
-  const toggleRegion = (region) => {
-    setSelectedRegions((prev) =>
-      prev.includes(region) ? prev.filter((r) => r !== region) : [...prev, region]
+  const toggleCategory = (category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
-  const filteredProducts = products.filter((p) => {
-    const regionMatch = selectedRegions.length === 0 || selectedRegions.includes(p.region);
-    const certMatch = !mscOnly || p.certified;
-    return regionMatch && certMatch;
-  });
+  const filteredProducts = useMemo(
+    () =>
+      selectedCategories.length === 0
+        ? allProducts
+        : allProducts.filter((p) => selectedCategories.includes(p.category)),
+    [selectedCategories]
+  );
 
   return (
     <div className="bg-gradient-to-b from-[#050D1A] to-[#0A2240] text-white min-h-screen">
-
       {/* ================= PRODUCT GRID SECTION ================= */}
       <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col lg:flex-row gap-12">
-
         {/* FILTER SIDEBAR */}
         <aside className="lg:w-64">
           <div className="sticky top-28 bg-[#0f172a]/50 backdrop-blur-md border border-white/10 rounded-xl p-6">
             <h3 className="text-lg font-semibold mb-6">Filters</h3>
 
-            {/* Active filter count badge */}
-            {(selectedRegions.length > 0 || mscOnly) && (
+            {/* Active filter clear */}
+            {selectedCategories.length > 0 && (
               <button
-                onClick={() => { setSelectedRegions([]); setMscOnly(false); }}
+                onClick={() => setSelectedCategories([])}
                 className="mb-4 text-xs text-[#C9A84C] border border-[#C9A84C]/40 px-3 py-1 rounded-full hover:bg-[#C9A84C]/10 transition-colors"
               >
                 Clear all filters ×
@@ -76,34 +47,28 @@ export default function CatalogGrid() {
             )}
 
             <div className="mb-6">
-              <p className="text-sm uppercase text-sky-400 mb-3">Region</p>
-              {ALL_REGIONS.map((region) => (
+              <p className="text-sm uppercase text-sky-400 mb-3">Category</p>
+              {CATEGORIES.map((category) => (
                 <label
-                  key={region}
+                  key={category}
                   className="flex items-center gap-2 mb-2 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors"
                 >
                   <input
                     type="checkbox"
                     className="accent-sky-400 cursor-pointer"
-                    checked={selectedRegions.includes(region)}
-                    onChange={() => toggleRegion(region)}
+                    checked={selectedCategories.includes(category)}
+                    onChange={() => toggleCategory(category)}
                   />
-                  {region}
+                  {category}
                 </label>
               ))}
             </div>
 
-            <div>
-              <p className="text-sm uppercase text-sky-400 mb-3">Certification</p>
-              <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer hover:text-white transition-colors">
-                <input
-                  type="checkbox"
-                  className="accent-sky-400 cursor-pointer"
-                  checked={mscOnly}
-                  onChange={() => setMscOnly((v) => !v)}
-                />
-                MSC Certified
-              </label>
+            <div className="pt-4 border-t border-white/10">
+              <p className="text-sm uppercase text-sky-400 mb-2">Origin</p>
+              <p className="flex items-center gap-2 text-sm text-gray-300">
+                <MapPin className="w-4 h-4 text-[#C9A84C]" /> India
+              </p>
             </div>
           </div>
         </aside>
@@ -114,7 +79,7 @@ export default function CatalogGrid() {
             <div className="flex flex-col items-center justify-center h-64 text-gray-500">
               <p className="text-lg font-semibold mb-2">No products match your filters</p>
               <button
-                onClick={() => { setSelectedRegions([]); setMscOnly(false); }}
+                onClick={() => setSelectedCategories([])}
                 className="text-sm text-[#C9A84C] hover:underline"
               >
                 Clear filters
@@ -134,6 +99,7 @@ export default function CatalogGrid() {
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
                     className="group bg-[#0f172a]/40 border border-white/10 rounded-xl flex flex-col h-full relative overflow-hidden transition-all duration-300 hover:border-[#C9A84C]/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(201,168,76,0.15)] cursor-pointer"
+                    onClick={() => setSelectedProduct(product)}
                   >
                     <div className="relative h-56 border-b border-[#1e2a3b] bg-slate-900 overflow-hidden">
                       <img
@@ -145,21 +111,28 @@ export default function CatalogGrid() {
                         loading="lazy"
                         onLoad={() => handleImageLoad(product.id)}
                       />
-                      {product.certified && (
-                        <span className="absolute top-3 right-3 bg-sky-500/80 backdrop-blur text-xs font-bold px-2 py-1 rounded-full text-white">
-                          MSC
-                        </span>
-                      )}
+                      <span className="absolute top-3 left-3 bg-black/55 backdrop-blur text-[10px] font-bold px-2.5 py-1 rounded-full text-white uppercase tracking-wider">
+                        {product.category}
+                      </span>
+                      <span className="absolute top-3 right-3 bg-[#C9A84C]/90 backdrop-blur text-[10px] font-bold px-2.5 py-1 rounded-full text-[#050D1A]">
+                        Origin: India
+                      </span>
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
                       <h3 className="text-xl font-semibold group-hover:text-[#C9A84C] transition-colors">
                         {product.name}
                       </h3>
-                      <p className="text-gray-400 text-sm mt-2 flex-grow">
-                        Region: {product.region}
+                      {product.scientificName && (
+                        <p className="text-gray-400 text-sm italic mt-1">{product.scientificName}</p>
+                      )}
+                      <p className="text-gray-400 text-sm mt-3 flex-grow">
+                        {product.shortDescription}
                       </p>
-                      <button 
-                        onClick={() => setSelectedProduct(product)}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProduct(product);
+                        }}
                         className="relative overflow-hidden w-full mt-6 border border-[var(--product-border)] text-[var(--text-primary)] py-3 px-4 uppercase text-xs font-bold tracking-[0.2em] flex items-center justify-between transition-all duration-300 hover:bg-[var(--accent-gold)] hover:text-[var(--btn-text)] hover:border-[var(--accent-gold)] group/btn"
                       >
                         <span className="relative z-10 flex items-center justify-between w-full">
@@ -175,14 +148,13 @@ export default function CatalogGrid() {
             </div>
           )}
         </div>
-
       </section>
-      
+
       {/* Product Modal */}
-      <ProductModal 
-        product={selectedProduct} 
+      <ProductModal
+        product={selectedProduct}
         isOpen={selectedProduct !== null}
-        onClose={() => setSelectedProduct(null)} 
+        onClose={() => setSelectedProduct(null)}
       />
     </div>
   );

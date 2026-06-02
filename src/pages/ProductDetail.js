@@ -24,6 +24,8 @@ export default function ProductDetail() {
     window.scrollTo(0, 0);
     if (!product) {
       navigate("/catalog");
+    } else {
+      document.title = `${product.name} (${product.scientificName}) — Blue Wave Marine`;
     }
   }, [product, navigate]);
 

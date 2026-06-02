@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import CatalogPage from "./pages/CatalogPage";
+import WhatsAppFloat from "./components/WhatsAppFloat";
 import { ThemeProvider } from "next-themes";
 import { motion, useScroll, useSpring } from "framer-motion";
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
+        <WhatsAppFloat />
       </BrowserRouter>
     </ThemeProvider>
   );
