@@ -1,18 +1,30 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo, useRef, useEffect } from 'react';
 import axios from 'axios';
+import emailjs from '@emailjs/browser';
 import { CheckCircle, AlertCircle, Check, ChevronDown, X, Search } from 'lucide-react';
 import { products } from '../data/products';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Owner notification + client auto-confirmation email (free, no API key).
-// On the first submission FormSubmit emails an activation link to the owner
-// address below — click it once to start receiving quote emails.
+// Owner notification email (FormSubmit). Click the one-time activation link
+// that arrives at OWNER_EMAIL on the first submission to start receiving quotes.
 const OWNER_EMAIL = 'bluewavemarine07@gmail.com';
 const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_EMAIL}`;
 const COMPANY_WHATSAPP = '918891704553';
+
+// Client auto-confirmation email (EmailJS — reliable, sends from the owner's
+// connected inbox so it doesn't hit spam). Paste the three IDs from your free
+// EmailJS account to activate. These IDs are safe to expose client-side;
+// secure them by allow-listing your domain in EmailJS → Account → Security.
+const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
+const EMAILJS_CONFIGURED =
+  !EMAILJS_SERVICE_ID.startsWith('YOUR_') &&
+  !EMAILJS_TEMPLATE_ID.startsWith('YOUR_') &&
+  !EMAILJS_PUBLIC_KEY.startsWith('YOUR_');
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -121,20 +133,30 @@ export default function Contact() {
       message: formData.notes,
     };
 
-    // 2) Email the full quote to the owner + auto-confirm the client (FormSubmit).
-    const emailPayload = {
+    // 2) Notify the owner with the full quote (FormSubmit → OWNER_EMAIL).
+    const ownerEmailPayload = {
       _subject: `New Quote Request — ${formData.company || formData.name} (${formData.country})`,
       _template: 'table',
       _captcha: 'false',
-      _autoresponse: `Hello ${formData.name},\n\nThank you for your quote request to Blue Wave Marine. We have received your requirements for: ${productsText}. Our export team will get back to you with a detailed proposal within 24 hours.\n\nWarm regards,\nBlue Wave Marine`,
       name: formData.name,
       company: formData.company,
-      email: formData.email, // submitter → reply-to + auto-confirmation recipient
+      email: formData.email, // sets reply-to so the owner can reply to the client
       phone_whatsapp: formData.phone,
       destination_country: formData.country,
       products_required: productsText,
       quantity_required: formData.quantity,
       additional_notes: formData.notes || '—',
+    };
+
+    // 3) Auto-confirmation email to the client (EmailJS).
+    const clientEmailParams = {
+      to_email: formData.email,
+      to_name: formData.name,
+      company: formData.company,
+      country: formData.country,
+      products: productsText,
+      quantity: formData.quantity,
+      reply_to: OWNER_EMAIL,
     };
 
     // Build the client's one-tap WhatsApp confirmation link before resetting.
@@ -147,31 +169,40 @@ export default function Contact() {
       `Quantity: ${formData.quantity}`;
     const waUrl = `https://wa.me/${COMPANY_WHATSAPP}?text=${encodeURIComponent(waText)}`;
 
-    // Fire both in parallel; neither failure should block the other.
-    const [storeRes, emailRes] = await Promise.allSettled([
+    // Fire all channels in parallel; one failure must not block the others.
+    const tasks = [
       BACKEND_URL
         ? axios.post(`${API}/contact`, backendPayload)
         : Promise.reject(new Error('backend url not configured')),
-      axios.post(FORMSUBMIT_ENDPOINT, emailPayload, {
+      axios.post(FORMSUBMIT_ENDPOINT, ownerEmailPayload, {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       }),
-    ]);
+    ];
+    if (EMAILJS_CONFIGURED) {
+      tasks.push(
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, clientEmailParams, {
+          publicKey: EMAILJS_PUBLIC_KEY,
+        })
+      );
+    }
 
+    const results = await Promise.allSettled(tasks);
     setLoading(false);
 
-    const storeOk = storeRes.status === 'fulfilled';
-    const emailOk = emailRes.status === 'fulfilled';
+    const storeOk = results[0].status === 'fulfilled';
+    const ownerEmailOk = results[1].status === 'fulfilled';
+    const clientEmailOk = EMAILJS_CONFIGURED && results[2]?.status === 'fulfilled';
 
-    if (emailOk || storeOk) {
+    if (ownerEmailOk || storeOk || clientEmailOk) {
       setWaConfirmUrl(waUrl);
+      const emailNote = clientEmailOk ? ' A confirmation email has been sent to you.' : '';
       setStatus({
         type: 'success',
-        message:
-          'Thank you! Your quote request has been submitted. A confirmation email is on its way, and our export team will contact you within 24 hours.',
+        message: `Thank you! Your quote request has been submitted.${emailNote} Our export team will contact you within 24 hours.`,
       });
       resetForm();
     } else {
-      console.error('Quote submission failed', { storeRes, emailRes });
+      console.error('Quote submission failed', results);
       setStatus({
         type: 'error',
         message: 'Something went wrong submitting your request. Please try again, or reach us on WhatsApp or by email.',
