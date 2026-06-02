@@ -11,8 +11,8 @@ export default function Footer() {
   const [bubbles, setBubbles] = useState([]);
 
   useEffect(() => {
-    // Generate 25 stable random bubbles for the footer on mount
-    const newBubbles = Array.from({ length: 25 }).map((_, i) => ({
+    // Generate stable random bubbles for the footer on mount
+    const newBubbles = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
       size: Math.random() * 10 + 4, // 4px to 14px
       left: `${Math.random() * 100}%`,
@@ -26,7 +26,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="relative bg-[var(--footer-bg)] text-white pt-32 pb-12 overflow-hidden transition-colors duration-500">
+    <footer className="cv-auto relative bg-[var(--footer-bg)] text-white pt-32 pb-12 overflow-hidden transition-colors duration-500">
       {/* Animated Bubbles Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {bubbles.map((b) => (

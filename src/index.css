@@ -322,3 +322,24 @@ html {
 .gold-bottom-border.in-view::after {
     transform: translateX(-50%) scaleX(1);
 }
+
+/* ── Performance ─────────────────────────────────────────────── */
+/* Pause heavy/off-screen sections — the browser skips their layout,
+   paint AND running animations until they scroll into view. */
+.cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 700px;
+}
+
+/* Honour users who prefer reduced motion: halt the decorative
+   infinite animations and snap transitions (also a big perf win for them). */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

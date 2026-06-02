@@ -96,13 +96,13 @@ export default function Navbar() {
   
   // Use CSS variables for the background and text color when scrolled.
   // When not scrolled, we keep it transparent and white (assuming it sits over the Hero).
-  const navBgClass = scrolled ? "bg-[var(--nav-bg)] shadow-[var(--nav-shadow)]" : "bg-transparent";
+  const navBgClass = scrolled ? "bg-[var(--nav-bg)] shadow-[var(--nav-shadow)] backdrop-blur-md" : "bg-transparent";
   const textColorClass = scrolled ? "text-[var(--nav-links)]" : "text-white";
 
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${navBgClass}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${navBgClass}`}
       >
         <div className="w-full px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
           {/* Logo */}
