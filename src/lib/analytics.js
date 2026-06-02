@@ -1,7 +1,7 @@
 // Google Analytics 4 (privacy-respecting page-view tracking).
 // Paste your GA4 Measurement ID below (looks like "G-XXXXXXXXXX") to activate.
 // Until then this module is completely inert — nothing loads, nothing tracks.
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+const GA_MEASUREMENT_ID = 'G-8Y1823NJEN';
 
 export const GA_ENABLED = /^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID);
 
