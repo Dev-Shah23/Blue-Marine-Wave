@@ -121,13 +121,13 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[var(--accent-gold)] mt-0.5 flex-shrink-0" />
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Kochi%2C+Kerala%2C+India"
+                  href="https://www.google.com/maps/search/?api=1&query=Kochi%2C+Kerala%2C+India+682001"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Kochi, Kerala, India — open in Google Maps"
+                  aria-label="Kochi, Kerala, India 682001 — open in Google Maps"
                   className="hover:text-[var(--accent-gold)] transition-colors"
                 >
-                  Kochi, Kerala, India
+                  Kochi, Kerala, India - 682001
                 </a>
               </li>
             </ul>
@@ -149,7 +149,10 @@ export default function Footer() {
         {/* Bottom */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
           <p className="text-xs text-slate-500 uppercase tracking-widest">
-            © 2026 Blue Wave Marine. All rights reserved. Industrial Grade Seafood Excellence.
+            © 2026 Blue Wave Marine. All rights reserved.{" "}·{" "}
+            <Link to="/privacy" className="hover:text-[var(--accent-gold)] transition-colors">
+              Privacy Policy
+            </Link>
           </p>
           <p className="text-xs text-slate-600">
             Designed & Developed by{" "}

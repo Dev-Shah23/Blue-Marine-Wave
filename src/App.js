@@ -1,18 +1,27 @@
 import "@/App.css";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import CatalogPage from "./pages/CatalogPage";
+import Privacy from "./pages/Privacy";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import { ThemeProvider } from "next-themes";
 import { motion, useScroll, useSpring } from "framer-motion";
+import { initGA, trackPageView } from "./lib/analytics";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    initGA();
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    trackPageView(pathname);
   }, [pathname]);
+
   return null;
 }
 
@@ -45,6 +54,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <WhatsAppFloat />
       </BrowserRouter>
