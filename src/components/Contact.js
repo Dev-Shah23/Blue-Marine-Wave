@@ -18,9 +18,9 @@ const COMPANY_WHATSAPP = '918891704553';
 // connected inbox so it doesn't hit spam). Paste the three IDs from your free
 // EmailJS account to activate. These IDs are safe to expose client-side;
 // secure them by allow-listing your domain in EmailJS → Account → Security.
-const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
-const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID = 'service_8vtjkt9';
+const EMAILJS_TEMPLATE_ID = 'template_ooad4m6';
+const EMAILJS_PUBLIC_KEY = 'XPyw__EH-TU9tPOJC';
 const EMAILJS_CONFIGURED =
   !EMAILJS_SERVICE_ID.startsWith('YOUR_') &&
   !EMAILJS_TEMPLATE_ID.startsWith('YOUR_') &&
