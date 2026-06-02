@@ -136,17 +136,19 @@ export default function About() {
                 </div>
               </div>
 
-              {/* Floating legacy stat badge */}
+              {/* Legacy milestone badge — balanced horizontal layout */}
               <div
                 ref={countRef}
-                className="absolute -top-6 -right-3 sm:-right-6 bg-[var(--card-bg)]/95 backdrop-blur-md text-[var(--text-primary)] px-6 py-4 rounded-2xl shadow-xl border border-[var(--card-border)] transition-colors duration-500"
+                className="absolute -top-6 -right-3 sm:-right-6 flex items-center gap-3.5 bg-[var(--card-bg)]/95 backdrop-blur-md text-[var(--text-primary)] pl-5 pr-6 py-4 rounded-2xl shadow-xl border border-[var(--card-border)] transition-colors duration-500"
               >
-                <p className="text-4xl font-bold flex items-center font-serif text-[var(--accent-gold)]">
-                  <motion.span>{displayCount}</motion.span>+
-                </p>
-                <p className="text-xs text-[var(--text-secondary)] max-w-[9rem] leading-snug mt-1 transition-colors duration-500">
-                  Years of trusted seafood trade
-                </p>
+                <span className="font-serif font-bold text-[var(--accent-gold)] leading-none text-5xl">
+                  <motion.span>{displayCount}</motion.span>
+                  <span className="align-top text-2xl">+</span>
+                </span>
+                <span className="h-10 w-px bg-[var(--card-border)] flex-shrink-0" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--text-secondary)] leading-snug transition-colors duration-500">
+                  Years of<br />Seafood Heritage
+                </span>
               </div>
             </div>
           </motion.div>

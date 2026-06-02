@@ -14,15 +14,6 @@ const OWNER_EMAIL = 'bluewavemarine07@gmail.com';
 const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_EMAIL}`;
 const COMPANY_WHATSAPP = '918891704553';
 
-const PACKAGING_OPTIONS = [
-  'IQF (Individually Quick Frozen)',
-  'Block Frozen',
-  'Vacuum Sealed',
-  'Retail Packs',
-  'Bulk / Master Cartons',
-  'Custom (specify in notes)',
-];
-
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -31,7 +22,6 @@ export default function Contact() {
     email: '',
     phone: '',
     quantity: '',
-    packaging: '',
     notes: '',
   });
 
@@ -96,7 +86,6 @@ export default function Contact() {
       email: '',
       phone: '',
       quantity: '',
-      packaging: '',
       notes: '',
     });
     setSelectedProducts([]);
@@ -118,7 +107,6 @@ export default function Contact() {
 
     const productList = selectedObjects.map((p) => `${p.name} (${p.scientificName})`);
     const productsText = productList.join(', ');
-    const packaging = formData.packaging || '—';
 
     // 1) Store the quote in the backend (PostgreSQL) — exact schema it expects.
     const backendPayload = {
@@ -130,12 +118,7 @@ export default function Contact() {
       destination_port: '',
       product_interest: productsText,
       quantity: formData.quantity,
-      message: [
-        formData.packaging ? `Preferred Packaging: ${formData.packaging}` : '',
-        formData.notes,
-      ]
-        .filter(Boolean)
-        .join('\n\n'),
+      message: formData.notes,
     };
 
     // 2) Email the full quote to the owner + auto-confirm the client (FormSubmit).
@@ -151,7 +134,6 @@ export default function Contact() {
       destination_country: formData.country,
       products_required: productsText,
       quantity_required: formData.quantity,
-      preferred_packaging: packaging,
       additional_notes: formData.notes || '—',
     };
 
@@ -162,8 +144,7 @@ export default function Contact() {
       `Company: ${formData.company}\n` +
       `Country: ${formData.country}\n` +
       `Products: ${productsText}\n` +
-      `Quantity: ${formData.quantity}\n` +
-      `Packaging: ${packaging}`;
+      `Quantity: ${formData.quantity}`;
     const waUrl = `https://wa.me/${COMPANY_WHATSAPP}?text=${encodeURIComponent(waText)}`;
 
     // Fire both in parallel; neither failure should block the other.
@@ -447,23 +428,6 @@ export default function Contact() {
               {productError && selectedProducts.length === 0 && (
                 <p className="mt-2 text-sm text-red-500">Please select at least one product.</p>
               )}
-            </div>
-
-            <div>
-              <label htmlFor="packaging" className={labelClass}>Preferred Packaging</label>
-              <select
-                id="packaging"
-                name="packaging"
-                data-testid="contact-packaging-input"
-                value={formData.packaging}
-                onChange={handleChange}
-                className={`${inputClass} cursor-pointer`}
-              >
-                <option value="">Select packaging (optional)…</option>
-                {PACKAGING_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
             </div>
 
             <div>

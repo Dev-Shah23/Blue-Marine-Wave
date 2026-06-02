@@ -2,11 +2,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-
-// Premium maritime hero visual — dramatic ocean horizon at golden hour.
-// Swap this single URL (or drop a local file) to change the hero background.
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?q=80&w=2400&auto=format&fit=crop";
+import heroImg from "../assets/hero.avif";
 
 export default function Hero() {
   const ref = useRef(null);
@@ -14,7 +10,7 @@ export default function Hero() {
   const { scrollY } = useScroll();
 
   // Smooth parallax
-  const y = useTransform(scrollY, [0, 600], [0, 150]);
+  const y = useTransform(scrollY, [0, 600], [0, 120]);
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -23,25 +19,32 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className={`relative min-h-screen flex items-center overflow-hidden text-white gold-bottom-border ${isInView ? "in-view" : ""}`}
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden text-white gold-bottom-border ${isInView ? "in-view" : ""}`}
     >
-      {/* Background with Parallax */}
+      {/* Background with Parallax — seafood flat-lay (framed edges, dark centre) */}
       <motion.div style={{ y }} className="absolute inset-0">
         <div
           className="w-full h-full bg-cover bg-center animate-zoom"
           style={{
-            backgroundImage: `url('${HERO_IMAGE}')`,
-            filter: "brightness(0.82) contrast(1.06)",
+            backgroundImage: `url(${heroImg})`,
+            filter: "brightness(0.95) contrast(1.05)",
           }}
         />
       </motion.div>
 
-      {/* Layered Gradients — depth + text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/20" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25" />
+      {/* Overlays — keep the seafood visible while guaranteeing centre text contrast */}
+      <div className="absolute inset-0 bg-black/35" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/55" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 55%, transparent 80%)",
+        }}
+      />
 
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-32">
+      {/* Centered content */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-6 text-center py-32">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -49,54 +52,57 @@ export default function Hero() {
             hidden: {},
             visible: { transition: { staggerChildren: 0.15 } },
           }}
-          className="max-w-3xl"
+          className="flex flex-col items-center"
         >
-          {/* Eyebrow */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            className="inline-flex items-center gap-2 mb-7 px-4 py-2 rounded-full bg-[#C9A84C]/15 text-[#C9A84C] text-[11px] sm:text-xs font-semibold tracking-[0.25em] uppercase border border-[#C9A84C]/30 backdrop-blur-sm"
-          >
-            Blue Wave Marine · Premium Seafood Exports
-          </motion.div>
-
-          {/* Heading */}
+          {/* Primary heading — company name (dominant) */}
           <motion.h1
             variants={{
               hidden: { opacity: 0, y: 40 },
               visible: { opacity: 1, y: 0 },
             }}
-            className="font-serif font-bold leading-[1.04] tracking-tight text-5xl sm:text-6xl lg:text-8xl drop-shadow-[0_2px_24px_rgba(0,0,0,0.45)]"
+            className="font-serif font-bold leading-[0.95] tracking-tight text-6xl sm:text-7xl lg:text-8xl xl:text-9xl drop-shadow-[0_2px_30px_rgba(0,0,0,0.7)]"
           >
-            Rising With <br className="hidden sm:block" />
-            The{" "}
+            Blue Wave{" "}
             <span className="bg-gradient-to-r from-[#C9A84C] to-[#f0d78c] bg-clip-text text-transparent">
-              Tide
+              Marine
             </span>
           </motion.h1>
 
-          {/* Description */}
+          {/* Secondary tagline — supporting, framed by symmetric gold rules */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            className="mt-6 flex items-center justify-center gap-4"
+          >
+            <span className="h-px w-8 sm:w-12 bg-[#C9A84C]/80" />
+            <p className="font-serif italic font-light tracking-wide text-slate-100 text-xl sm:text-2xl lg:text-3xl whitespace-nowrap drop-shadow-[0_1px_14px_rgba(0,0,0,0.7)]">
+              Rising With Every Tide
+            </p>
+            <span className="h-px w-8 sm:w-12 bg-[#C9A84C]/80" />
+          </motion.div>
+
+          {/* Supporting line */}
           <motion.p
             variants={{
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0 },
             }}
-            className="mt-7 text-lg md:text-xl text-slate-200/90 max-w-xl leading-relaxed"
+            className="mt-6 text-base md:text-lg text-slate-200/90 max-w-xl mx-auto leading-relaxed drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]"
           >
             From India's coastline to the world's finest tables — sustainably
-            sourced, export-grade seafood delivered with uncompromising freshness
-            and cold-chain precision.
+            sourced and delivered with uncompromising freshness and cold-chain
+            precision.
           </motion.p>
 
-          {/* Buttons */}
+          {/* CTAs */}
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0 },
             }}
-            className="flex flex-wrap gap-4 mt-10"
+            className="flex flex-wrap gap-4 mt-10 justify-center"
           >
             <button
               onClick={() => scrollToSection("contact")}
@@ -111,7 +117,7 @@ export default function Hero() {
 
             <Link
               to="/catalog"
-              className="px-8 py-4 rounded-lg font-bold border border-white/25 text-white hover:bg-white/10 hover:border-white/40 backdrop-blur-sm transition-all flex items-center gap-2"
+              className="px-8 py-4 rounded-lg font-bold border border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm transition-all flex items-center gap-2"
             >
               Explore Catalog
               <ArrowRight size={18} />
