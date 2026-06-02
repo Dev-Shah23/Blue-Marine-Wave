@@ -126,13 +126,12 @@ export default function About() {
                 {/* Caption gradient + label */}
                 <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
                 <div className="absolute bottom-5 left-6 right-6 text-white">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--accent-gold)] mb-1">
-                    Our Leadership
+                  <p className="text-2xl font-bold font-serif leading-tight drop-shadow-md">
+                    Dominic Antony
                   </p>
-                  <p className="text-xl font-bold font-serif leading-tight drop-shadow-md">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--accent-gold)] mt-1.5">
                     Founder &amp; Managing Director
                   </p>
-                  <p className="text-xs text-slate-300 italic mt-0.5">Blue Wave Marine</p>
                 </div>
               </div>
 

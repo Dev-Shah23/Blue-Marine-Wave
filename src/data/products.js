@@ -26,7 +26,7 @@ export const products = [
     scientificName: 'Thunnus albacares',
     category: 'Finfish',
     shortDescription: 'Deep-water yellowfin with firm, ruby-red meat for premium export markets.',
-    forms: ['Whole', 'Loin', 'Saku', 'Steak'],
+    forms: ['Whole', 'Loin', 'Steak'],
     image: yellowfinTuna,
     fullDescription:
       'Line-caught from the warm waters of the Indian Ocean, our Yellowfin Tuna is graded for colour, firmness and fat content, then blast-frozen to lock in sashimi-grade quality. Available whole or cut to your specification for global distribution.',

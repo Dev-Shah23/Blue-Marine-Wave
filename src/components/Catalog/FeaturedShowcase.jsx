@@ -8,7 +8,7 @@ import { products as catalogProducts } from "@/data/products";
 // Showcase data — curated straight from the live
 // catalog so it always stays in sync with products.
 // ──────────────────────────────────────────────
-const products = catalogProducts.slice(0, 5).map((p) => ({
+const products = catalogProducts.map((p) => ({
   name: p.name.toUpperCase(),
   scientificName: p.scientificName,
   category: p.category,
