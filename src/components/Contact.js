@@ -7,6 +7,13 @@ import { products } from '../data/products';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Owner notification + client auto-confirmation email (free, no API key).
+// On the first submission FormSubmit emails an activation link to the owner
+// address below — click it once to start receiving quote emails.
+const OWNER_EMAIL = 'bluewavemarine07@gmail.com';
+const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_EMAIL}`;
+const COMPANY_WHATSAPP = '918891704553';
+
 const PACKAGING_OPTIONS = [
   'IQF (Individually Quick Frozen)',
   'Block Frozen',
@@ -35,6 +42,7 @@ export default function Contact() {
 
   const [status, setStatus] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+  const [waConfirmUrl, setWaConfirmUrl] = useState(null);
 
   const dropdownRef = useRef(null);
 
@@ -106,17 +114,21 @@ export default function Contact() {
 
     setLoading(true);
     setStatus({ type: '', message: '' });
+    setWaConfirmUrl(null);
 
-    // Keep the exact payload shape the backend expects (backend-compatible).
     const productList = selectedObjects.map((p) => `${p.name} (${p.scientificName})`);
-    const payload = {
+    const productsText = productList.join(', ');
+    const packaging = formData.packaging || '—';
+
+    // 1) Store the quote in the backend (PostgreSQL) — exact schema it expects.
+    const backendPayload = {
       name: formData.name,
       company: formData.company,
       email: formData.email,
       phone: formData.phone,
       destination_country: formData.country,
       destination_port: '',
-      product_interest: productList.join(', '),
+      product_interest: productsText,
       quantity: formData.quantity,
       message: [
         formData.packaging ? `Preferred Packaging: ${formData.packaging}` : '',
@@ -126,21 +138,63 @@ export default function Contact() {
         .join('\n\n'),
     };
 
-    try {
-      await axios.post(`${API}/contact`, payload);
+    // 2) Email the full quote to the owner + auto-confirm the client (FormSubmit).
+    const emailPayload = {
+      _subject: `New Quote Request — ${formData.company || formData.name} (${formData.country})`,
+      _template: 'table',
+      _captcha: 'false',
+      _autoresponse: `Hello ${formData.name},\n\nThank you for your quote request to Blue Wave Marine. We have received your requirements for: ${productsText}. Our export team will get back to you with a detailed proposal within 24 hours.\n\nWarm regards,\nBlue Wave Marine`,
+      name: formData.name,
+      company: formData.company,
+      email: formData.email, // submitter → reply-to + auto-confirmation recipient
+      phone_whatsapp: formData.phone,
+      destination_country: formData.country,
+      products_required: productsText,
+      quantity_required: formData.quantity,
+      preferred_packaging: packaging,
+      additional_notes: formData.notes || '—',
+    };
+
+    // Build the client's one-tap WhatsApp confirmation link before resetting.
+    const waText =
+      `Quote Request — Blue Wave Marine\n` +
+      `Name: ${formData.name}\n` +
+      `Company: ${formData.company}\n` +
+      `Country: ${formData.country}\n` +
+      `Products: ${productsText}\n` +
+      `Quantity: ${formData.quantity}\n` +
+      `Packaging: ${packaging}`;
+    const waUrl = `https://wa.me/${COMPANY_WHATSAPP}?text=${encodeURIComponent(waText)}`;
+
+    // Fire both in parallel; neither failure should block the other.
+    const [storeRes, emailRes] = await Promise.allSettled([
+      BACKEND_URL
+        ? axios.post(`${API}/contact`, backendPayload)
+        : Promise.reject(new Error('backend url not configured')),
+      axios.post(FORMSUBMIT_ENDPOINT, emailPayload, {
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      }),
+    ]);
+
+    setLoading(false);
+
+    const storeOk = storeRes.status === 'fulfilled';
+    const emailOk = emailRes.status === 'fulfilled';
+
+    if (emailOk || storeOk) {
+      setWaConfirmUrl(waUrl);
       setStatus({
         type: 'success',
-        message: 'Thank you! Your quote request has been submitted. We will contact you within 24 hours.',
+        message:
+          'Thank you! Your quote request has been submitted. A confirmation email is on its way, and our export team will contact you within 24 hours.',
       });
       resetForm();
-    } catch (error) {
+    } else {
+      console.error('Quote submission failed', { storeRes, emailRes });
       setStatus({
         type: 'error',
-        message: 'Failed to submit form. Please try again or contact us directly.',
+        message: 'Something went wrong submitting your request. Please try again, or reach us on WhatsApp or by email.',
       });
-      console.error('Form submission error:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -199,6 +253,21 @@ export default function Contact() {
               )}
               <span>{status.message}</span>
             </div>
+          )}
+
+          {status.type === 'success' && waConfirmUrl && (
+            <a
+              href={waConfirmUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="contact-whatsapp-confirm"
+              className="mb-6 inline-flex items-center justify-center gap-2 w-full bg-[#25D366] hover:brightness-110 text-white font-bold rounded-lg px-6 py-3 transition-all"
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
+                <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.515 5.26l-.999 3.648 3.873-1.116zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+              </svg>
+              Get instant confirmation on WhatsApp
+            </a>
           )}
 
           <form onSubmit={handleSubmit} data-testid="contact-form" className="space-y-6">
