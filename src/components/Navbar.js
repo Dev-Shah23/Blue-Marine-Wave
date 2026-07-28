@@ -109,7 +109,9 @@ export default function Navbar() {
             to="/"
             className={`flex items-center gap-3 hover:text-[#C9A84C] transition-colors ${textColorClass}`}
           >
-            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Blue Wave Marine Logo" className="w-14 h-14 object-contain" />
+            <span className="inline-flex items-center justify-center bg-white rounded-lg p-1 shadow-md">
+              <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Blue Wave Marine Logo" className="w-12 h-12 object-contain" />
+            </span>
             <span className="text-lg font-bold tracking-widest font-serif">
               BLUE WAVE MARINE
             </span>
