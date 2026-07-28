@@ -85,11 +85,6 @@ export default function Products({ onProductClick }) {
                     {product.name}
                   </h3>
 
-                  {product.scientificName && (
-                    <p className="text-[var(--text-tertiary)] text-sm italic">
-                      {product.scientificName}
-                    </p>
-                  )}
                 </div>
 
                 {/* Short Description */}

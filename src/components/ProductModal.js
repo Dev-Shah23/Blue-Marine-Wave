@@ -57,9 +57,6 @@ export default function ProductModal({ product, isOpen, onClose }) {
                   <div className="absolute bottom-[24px] left-[24px] right-[24px] text-white z-10">
                     <p className="text-[var(--accent-gold)] text-xs font-bold uppercase tracking-[0.2em] mb-2 drop-shadow-md">Detailed Specifications</p>
                     <h2 className="text-3xl md:text-5xl font-bold font-serif leading-tight drop-shadow-xl">{product.name}</h2>
-                    {product.scientificName && (
-                      <p className="text-slate-300 italic text-sm mt-2 drop-shadow-md">{product.scientificName}</p>
-                    )}
                   </div>
                 </div>
 

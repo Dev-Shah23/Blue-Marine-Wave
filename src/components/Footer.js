@@ -1,5 +1,4 @@
 import { Mail, Phone, MapPin } from "lucide-react";
-import logo from "../fwdphotos/logo.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -89,7 +88,7 @@ export default function Footer() {
           {/* Column 1: Brand & Contact */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <img src={logo} alt="Blue Wave Marine Logo" className="w-16 h-16 object-contain" />
+              <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Blue Wave Marine Logo" className="w-16 h-16 object-contain" />
               <span className="text-xl font-bold tracking-widest font-serif">
                 BLUE WAVE MARINE
               </span>

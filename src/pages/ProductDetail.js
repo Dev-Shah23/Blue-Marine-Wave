@@ -25,7 +25,7 @@ export default function ProductDetail() {
     if (!product) {
       navigate("/catalog");
     } else {
-      document.title = `${product.name} (${product.scientificName}) — Blue Wave Marine`;
+      document.title = `${product.name} — Blue Wave Marine`;
     }
   }, [product, navigate]);
 
@@ -78,9 +78,6 @@ export default function ProductDetail() {
               <h1 className="text-5xl md:text-7xl font-bold font-serif mb-4 leading-tight">
                 {product.name}
               </h1>
-              <p className="text-[var(--text-secondary)] text-xl italic font-medium">
-                {product.scientificName}
-              </p>
             </div>
 
             <p className="text-lg text-[var(--text-secondary)] leading-relaxed max-w-xl border-l-4 border-[var(--accent-gold)] pl-6 italic bg-[var(--accent-gold)]/5 py-4 rounded-r-xl">

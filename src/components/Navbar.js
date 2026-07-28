@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { Sun, Moon } from "lucide-react";
-import logo from "../fwdphotos/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -110,7 +109,7 @@ export default function Navbar() {
             to="/"
             className={`flex items-center gap-3 hover:text-[#C9A84C] transition-colors ${textColorClass}`}
           >
-            <img src={logo} alt="Blue Wave Marine Logo" className="w-14 h-14 object-contain" />
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Blue Wave Marine Logo" className="w-14 h-14 object-contain" />
             <span className="text-lg font-bold tracking-widest font-serif">
               BLUE WAVE MARINE
             </span>

@@ -122,9 +122,6 @@ export default function CatalogGrid() {
                       <h3 className="text-xl font-semibold group-hover:text-[#C9A84C] transition-colors">
                         {product.name}
                       </h3>
-                      {product.scientificName && (
-                        <p className="text-gray-400 text-sm italic mt-1">{product.scientificName}</p>
-                      )}
                       <p className="text-gray-400 text-sm mt-3 flex-grow">
                         {product.shortDescription}
                       </p>

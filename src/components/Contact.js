@@ -70,7 +70,7 @@ export default function Contact() {
     const q = search.trim().toLowerCase();
     if (!q) return products;
     return products.filter((p) =>
-      `${p.name} ${p.scientificName} ${p.category}`.toLowerCase().includes(q)
+      `${p.name} ${p.category}`.toLowerCase().includes(q)
     );
   }, [search]);
 
@@ -117,7 +117,7 @@ export default function Contact() {
     setStatus({ type: '', message: '' });
     setWaConfirmUrl(null);
 
-    const productList = selectedObjects.map((p) => `${p.name} (${p.scientificName})`);
+    const productList = selectedObjects.map((p) => p.name);
     const productsText = productList.join(', ');
 
     // 1) Store the quote in the backend (PostgreSQL) — exact schema it expects.
@@ -427,10 +427,7 @@ export default function Contact() {
                               </span>
                               <span className="flex-1 min-w-0">
                                 <span className="block text-sm font-semibold text-[var(--text-primary)]">
-                                  {p.name}{' '}
-                                  <span className="font-normal italic text-[var(--text-secondary)]">
-                                    ({p.scientificName})
-                                  </span>
+                                  {p.name}
                                 </span>
                                 <span className="block text-xs text-[var(--text-tertiary)]">{p.category}</span>
                               </span>

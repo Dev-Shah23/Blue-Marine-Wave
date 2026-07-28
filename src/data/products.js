@@ -23,7 +23,6 @@ export const products = [
   {
     id: 'yellowfin-tuna',
     name: 'Yellowfin Tuna',
-    scientificName: 'Thunnus albacares',
     category: 'Finfish',
     shortDescription: 'Deep-water yellowfin with firm, ruby-red meat for premium export markets.',
     forms: ['Whole', 'Loin', 'Steak'],
@@ -40,7 +39,6 @@ export const products = [
   {
     id: 'vannamei-shrimp',
     name: 'Vannamei Shrimp',
-    scientificName: 'Litopenaeus vannamei',
     category: 'Shrimp',
     shortDescription: 'Farm-raised vannamei with consistent sizing, firm meat and clean flavour.',
     forms: ['HOSO', 'HLSO', 'PD', 'PDTO', 'Cooked'],
@@ -57,7 +55,6 @@ export const products = [
   {
     id: 'squid-whole',
     name: 'Squid (Whole)',
-    scientificName: 'Loligo spp.',
     category: 'Cephalopods',
     shortDescription: 'Fresh whole squid, fast-frozen at catch for tender, sweet texture.',
     forms: ['Whole'],
@@ -74,7 +71,6 @@ export const products = [
   {
     id: 'indian-mackerel',
     name: 'Indian Mackerel',
-    scientificName: 'Rastrelliger kanagurta',
     category: 'Finfish',
     shortDescription: 'Wild-caught Indian mackerel, rich in Omega-3 with a bold, distinctive flavour.',
     forms: ['Whole', 'Whole Round'],
@@ -91,7 +87,6 @@ export const products = [
   {
     id: 'mahi-mahi',
     name: 'Mahi Mahi',
-    scientificName: 'Coryphaena hippurus',
     category: 'Finfish',
     shortDescription: 'Lean, mild white-fleshed mahi mahi with a clean flavour and firm flake.',
     forms: ['Whole', 'Fillet', 'Portions', 'Loin'],
@@ -108,7 +103,6 @@ export const products = [
   {
     id: 'squid-whole-cleaned',
     name: 'Squid (Whole Cleaned)',
-    scientificName: 'Loligo spp.',
     category: 'Cephalopods',
     shortDescription: 'Whole cleaned squid tubes — skinned, gutted and ready to cook.',
     forms: ['Whole Cleaned'],
@@ -125,7 +119,6 @@ export const products = [
   {
     id: 'squid-rings',
     name: 'Squid Rings',
-    scientificName: 'Loligo spp.',
     category: 'Cephalopods',
     shortDescription: 'Uniformly cut squid rings — portion-ready for fryers and food service.',
     forms: ['Rings'],
@@ -142,7 +135,6 @@ export const products = [
   {
     id: 'cuttlefish-whole',
     name: 'Cuttlefish (Whole)',
-    scientificName: 'Sepia spp.',
     category: 'Cephalopods',
     shortDescription: 'Whole cuttlefish, fast-frozen to preserve firm texture and bright colour.',
     forms: ['Whole'],
@@ -159,7 +151,6 @@ export const products = [
   {
     id: 'cuttlefish-whole-cleaned',
     name: 'Cuttlefish (Whole Cleaned)',
-    scientificName: 'Sepia spp.',
     category: 'Cephalopods',
     shortDescription: 'Cleaned cuttlefish — bone, ink and skin removed, ready to portion.',
     forms: ['Whole Cleaned'],

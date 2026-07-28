@@ -10,7 +10,6 @@ import { products as catalogProducts } from "@/data/products";
 // ──────────────────────────────────────────────
 const products = catalogProducts.map((p) => ({
   name: p.name.toUpperCase(),
-  scientificName: p.scientificName,
   category: p.category,
   description: p.shortDescription,
   forms: p.forms,
@@ -227,20 +226,6 @@ export default function FeaturedShowcase() {
                     </motion.span>
                   </AnimatePresence>
                 </h1>
-
-                {/* Scientific name */}
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={`sci-${index}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.15 }}
-                    className="italic text-xl text-gray-400 mb-5"
-                  >
-                    {product.scientificName}
-                  </motion.p>
-                </AnimatePresence>
 
                 {/* Description */}
                 <AnimatePresence mode="wait">
