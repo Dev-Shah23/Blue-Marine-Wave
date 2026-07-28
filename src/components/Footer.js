@@ -96,7 +96,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed italic">
-              Asia's and Europe's premier gateway to the world's finest seafood harvest. Connecting international fisheries with the region's top importers since 2020.
+              Asia's and Europe's premier gateway to the world's finest seafood markets. Connecting international fisheries with the region's top importers and exporters since 2020.
             </p>
             <ul className="space-y-3 text-sm text-slate-400 mt-6">
               <li className="flex items-center gap-3">
@@ -125,10 +125,10 @@ export default function Footer() {
                   href="https://www.google.com/maps/search/?api=1&query=Kochi%2C+Kerala%2C+India+682001"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Kochi, Kerala, India 682001 — open in Google Maps"
+                  aria-label="Kochi, Kerala, India (682001) — open in Google Maps"
                   className="hover:text-[var(--accent-gold)] transition-colors"
                 >
-                  Kochi, Kerala, India - 682001
+                  Kochi, Kerala, India (682001)
                 </a>
               </li>
             </ul>

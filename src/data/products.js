@@ -8,13 +8,19 @@
 // ──────────────────────────────────────────────────────────────
 import yellowfinTuna from '../assets/products/yellowfin-tuna.jpg';
 import vannameiShrimp from '../assets/products/vannamei-shrimp.jpg';
-import squidWhole from '../assets/products/squid-whole.jpg';
+import squidWhole from '../assets/products/SQUID_whole.jpeg';
 import indianMackerel from '../assets/products/indian-mackerel.jpg';
 import mahiMahi from '../assets/products/mahi-mahi.jpg';
 import squidWholeCleaned from '../assets/products/squid-whole-cleaned.jpg';
 import squidRings from '../assets/products/squid-rings.jpg';
 import cuttlefishWhole from '../assets/products/cuttlefish-whole.jpg';
 import cuttlefishWholeCleaned from '../assets/products/cuttlefish-whole-cleaned.jpg';
+import skipjackTuna from '../assets/products/skipjack_tuna.jpeg';
+import japaneseThreadfinBream from '../assets/products/Japanese_thread_beam.jpeg';
+import reefCod from '../assets/products/reefcode.jpeg';
+import soleFish from '../assets/products/sole_fish.jpeg';
+import croakerFish from '../assets/products/croaker_fish.jpeg';
+import ribbonFish from '../assets/products/ribbon_fish.jpeg';
 
 // Catalog category taxonomy (drives the catalog filter sidebar)
 export const CATEGORIES = ['Finfish', 'Shrimp', 'Cephalopods'];
@@ -162,6 +168,102 @@ export const products = [
       grade: 'Export Grade',
       sizes: 'U5, 5/10, 10/20, 20/40 cm',
       packaging: 'IQF, Interleaved, Vacuum',
+    },
+  },
+  {
+    id: 'skipjack-tuna',
+    name: 'Skipjack Tuna',
+    category: 'Finfish',
+    shortDescription: 'Wild-caught skipjack with firm, flavourful red meat — a canning and export staple.',
+    forms: ['Whole', 'Loin', 'Steak'],
+    image: skipjackTuna,
+    fullDescription:
+      'Abundant across the Indian Ocean, our Skipjack Tuna is pole-and-line and purse-seine caught, then blast-frozen to lock in freshness. A versatile, high-yield species trusted by canneries and export buyers worldwide.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '1.8 kg+, 3.4 kg+',
+      packaging: 'Whole Round, IQF, Bulk',
+    },
+  },
+  {
+    id: 'japanese-threadfin-bream',
+    name: 'Japanese Threadfin Bream',
+    category: 'Finfish',
+    shortDescription: 'Delicate pink-hued bream with sweet white flesh — prized for surimi and whole-fish markets.',
+    forms: ['Whole', 'Fillet'],
+    image: japaneseThreadfinBream,
+    fullDescription:
+      'Caught along the Indian coastline, our Japanese Threadfin Bream offers tender, sweet white meat and an attractive pink hue. A premium species for surimi production, whole-fish retail and East-Asian cuisine.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '10–15, 15–20, 20–25 cm',
+      packaging: 'IQF, Block Frozen, Bulk',
+    },
+  },
+  {
+    id: 'reef-cod',
+    name: 'Reef Cod',
+    category: 'Finfish',
+    shortDescription: 'Firm, mild reef cod with excellent yield — a favourite for whole-fish and fillet buyers.',
+    forms: ['Whole', 'Fillet'],
+    image: reefCod,
+    fullDescription:
+      'Line-caught from Indian reef waters and frozen at peak freshness, our Reef Cod delivers firm white flesh and a clean flavour. A sought-after species for HORECA, steaming and grilling markets.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade A',
+      sizes: '0.5–1 kg, 1–2 kg, 2 kg+',
+      packaging: 'IQF, Whole Round, Bulk',
+    },
+  },
+  {
+    id: 'sole-fish',
+    name: 'Sole Fish',
+    category: 'Finfish',
+    shortDescription: 'Flat, fine-textured sole with delicate white meat — ideal for premium fillet programmes.',
+    forms: ['Whole', 'Fillet'],
+    image: soleFish,
+    fullDescription:
+      'Bottom-caught from Indian coastal waters, our Sole Fish delivers a soft, fine flake and mild flavour. A classic table fish available whole or as skinless fillets cut to your specification.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '100–200 g, 200–300 g, 300 g+',
+      packaging: 'IQF, Interleaved, Bulk',
+    },
+  },
+  {
+    id: 'croaker-fish',
+    name: 'Croaker Fish',
+    category: 'Finfish',
+    shortDescription: 'Wild-caught croaker with firm white flesh — versatile for frying, curries and surimi.',
+    forms: ['Whole', 'Fillet'],
+    image: croakerFish,
+    fullDescription:
+      'A workhorse of the Indian coastline, our Croaker Fish is flash-frozen whole to preserve its firm, mild white meat. Widely used for frying, curry-cut and surimi across Asian and African markets.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '200–300 g, 300–500 g, 500 g+',
+      packaging: 'IQF, Block Frozen, Bulk',
+    },
+  },
+  {
+    id: 'ribbon-fish',
+    name: 'Ribbon Fish',
+    category: 'Finfish',
+    shortDescription: 'Silvery, long-bodied ribbon fish with tender meat — in strong demand across East Asia.',
+    forms: ['Whole'],
+    image: ribbonFish,
+    fullDescription:
+      'Our Ribbon Fish is caught in Indian waters and frozen whole-round to preserve its bright silver skin and delicate flesh. A high-demand export species for Chinese and South-East Asian markets.',
+    specifications: {
+      origin: 'India',
+      grade: 'Export Grade',
+      sizes: '200–400 g, 400–600 g, 600 g+',
+      packaging: 'Block Frozen, IQF, Bulk',
     },
   },
 ];

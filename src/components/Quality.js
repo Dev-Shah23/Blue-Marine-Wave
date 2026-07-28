@@ -85,8 +85,7 @@ export default function Quality() {
           <p className="text-lg leading-relaxed text-[var(--text-secondary)] text-left">
             At Blue Wave Marine, quality is not just a promise—it's our foundation. 
             Every product undergoes strict inspection protocols, temperature monitoring, and traceability tracking. 
-            Our partnerships with certified fisheries and aquaculture farms ensure sustainable sourcing practices. 
-            With ISO 22000, HACCP, and various international certifications, we meet the highest global standards 
+            By having partnerships with leading exporters, we meet the highest global standards 
             while providing the flexibility needed to serve their diverse markets.
           </p>
         </motion.div>

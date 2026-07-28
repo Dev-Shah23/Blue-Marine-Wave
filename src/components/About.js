@@ -71,7 +71,7 @@ export default function About() {
               </p>
               
               <p>
-                We work directly with certified fisheries and processing facilities across the globe. 
+                We work directly with certified fisheries and processing facilities across India.
                 Our extensive network allows us to offer competitive pricing, consistent supply, and the 
                 flexibility to customize packaging and processing based on your specific market needs.
               </p>
@@ -88,7 +88,8 @@ export default function About() {
                 'Custom processing & sorting options',
                 'Comprehensive cold-chain tracking',
                 'Multi-national compliance expertise',
-                'European and Asian market distribution support'
+                'European and Asian market distribution support',
+                'Our QC works all over India.'
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -112,7 +113,7 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="relative flex justify-center lg:justify-end"
           >
-            <div className="relative w-full max-w-sm">
+            <div className="relative w-full max-w-[288px]">
               {/* Decorative gold frame accent */}
               <div className="absolute -inset-3 rounded-3xl border border-[var(--accent-gold)]/20 pointer-events-none hidden sm:block" />
 
